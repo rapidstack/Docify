@@ -16,7 +16,11 @@ doc = Document(
         c.Nbsp(),
         c.A(c.Img(alt='Build Status',
                   src='https://travis-ci.org/rapidstack/docify.svg?branch=master'),
-            href='https://travis-ci.org/rapidstack/docify')),
+            href='https://travis-ci.org/rapidstack/docify'),
+        c.Nbsp(),
+        c.A(c.Img(alt='Documentation Status',
+                  src='https://readthedocs.org/projects/docify/badge/?version=latest'),
+            href='https://docify.readthedocs.io/en/latest/?badge=latest')),
     c.Div(c.Nbsp()),
     c.H2('Introduction'),
     c.Div(

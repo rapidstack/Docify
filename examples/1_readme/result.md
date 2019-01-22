@@ -5,7 +5,7 @@ Simple, flexible python document generator
 
  
 
-[![PyPI version](https://img.shields.io/pypi/v/docify.svg)](https://pypi.org/project/docify) [![Build Status](https://travis-ci.org/rapidstack/docify.svg?branch=master)](https://travis-ci.org/rapidstack/docify)
+[![PyPI version](https://img.shields.io/pypi/v/docify.svg)](https://pypi.org/project/docify) [![Build Status](https://travis-ci.org/rapidstack/docify.svg?branch=master)](https://travis-ci.org/rapidstack/docify) [![Documentation Status](https://readthedocs.org/projects/docify/badge/?version=latest)](https://docify.readthedocs.io/en/latest/?badge=latest)
 
  
 

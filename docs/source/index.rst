@@ -9,7 +9,7 @@ Docify
 Simple, flexible python document generator
 
 
-Indices and tables
+Contents
 ------------------
 
 * :ref:`genindex`
@@ -17,12 +17,9 @@ Indices and tables
 * :ref:`search`
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
    
-   modules
-
-
+   API documentation <modules>
 
 
 Introduction
