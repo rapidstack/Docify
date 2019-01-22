@@ -56,10 +56,10 @@ class Division(Component):
 
     Example usage: ::
         Div(Span('a')) + Span('b')
-        # Result: Div(Span('a'), Span('b'))
+        \# Div(Span('a'), Span('b'))
 
         Div(Span('a')) + Div(Span('b'))
-        # Result: Div(Span('a'), Span('b'))
+        \# Div(Span('a'), Span('b'))
     '''
 
     def __add__(self, component):
