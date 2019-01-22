@@ -55,6 +55,7 @@ class Division(Component):
     Supports + operator to add an Element or merge with another Div.
 
     Example addition: ::
+
         Div(Span('a')) + Span('b')
         \# Div(Span('a'), Span('b'))
 
@@ -134,9 +135,10 @@ class UnorderedList(List):
 
 
 class Element(Component):
-    '''An abstract class for any single element
+    '''An abstract class for any single element.
+    Do not use it directly.
 
-    :param Element element: Element to be wrapped
+    :param Element element: Element to be wrapped.
     '''
 
     txt = '{element}'
