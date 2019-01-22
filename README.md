@@ -1,50 +1,48 @@
-Header 1
+Docify
 ====================
 
-Header 2
+Simple, flexible python document generator
+
+ 
+
+[![PyPI version](https://img.shields.io/pypi/v/docify.svg)](https://pypi.org/project/docify) [![Build Status](https://travis-ci.org/rapidstack/docify.svg?branch=master)](https://travis-ci.org/rapidstack/docify)
+
+ 
+
+Introduction
 --------------------
 
-### Header 3
+Docify helps you write documents in different formats from a **Python object**
 
-#### Header 4
+ 
 
-##### Header 5
+> **Note:** It's not a document *converter*, neither a *documentation* generator, nor a document *parser*
 
-###### Header 6
+ 
 
-*Italic*
-
-**Bold**
-
-***Italic* inside bold**
-
-***Bold** inside italic*
-
-> Blockquote
-
-~~Strikethrough~~
+Installation
+--------------------
 
 ```
-# Code block
-:(){ :|:& };:
+pip install docify
 ```
 
-Inline code: ``:(){ :|:& };:``
+ 
 
-1. Item 1
-2. [Item 2](#)
-   * Item 2.1
-   * [Item 2.2](#)
-      1. Item 2.2.1
-      2. [Item 2.2.2](#)
+Usage & Examples
+--------------------
 
-![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)
+**[Find quickstart and more examples here](https://github.com/rapidstack/docify/tree/master/examples)**
 
---------------------------------------------------
+ 
 
-[google](https://google.com)
+**Try examples like this**
 
-[![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)](https://img.shields.io/badge/docify-image_test-green.svg)
+```
+python doc.py markdown
+
+python doc.py htmlbootstrap
+```
 
 
 <sup>This document is generated using [Docify](https://github.com/rapidstack/docify)</sup>
