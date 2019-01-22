@@ -1,0 +1,17 @@
+language: python
+matrix:
+  include:
+    - python: "3.3"
+    - python: "3.4"
+    - python: "3.5"
+    - python: "3.6"
+    - python: "3.7"
+      dist: xenial
+      sudo: true
+install:
+  - python setup.py install
+script:
+  - python tests/formatters/markdown_test.py
+  - python tests/formatters/html_test.py
+  - python tests/formatters/html_bootstrap_test.py
+  - python tests/examples_test.py
