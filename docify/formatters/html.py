@@ -34,6 +34,8 @@ DOC_TMPL = '''\
 
 
 class HTML(Formatter):
+    '''HTML fomatter'''
+
     handlers = {
         Document: lambda x: DOC_TMPL.format(
             '\n'.join(map(lambda y: HTML.f(c.Div(y)), x.components))),
@@ -99,7 +101,8 @@ class HTML(Formatter):
             HTML.i(x.depth), HTML.f(x.element)),
 
         c.Img: lambda x: '{0}<img src="{1}" alt="{2}" />'.format(
-            HTML.i(x.depth), x.src.replace('"', '\\"'), x.alt.replace('"', '\\"'))
+            HTML.i(x.depth), x.src.replace('"', '\\"'),
+            x.alt.replace('"', '\\"'))
     }
 
     @classmethod
@@ -109,4 +112,8 @@ class HTML(Formatter):
 
     @staticmethod
     def i(depth):
+        '''Create indentation based on depth.
+
+        :param int depth: Depth of object.
+        '''
         return ' ' * (12 + (depth * 4))

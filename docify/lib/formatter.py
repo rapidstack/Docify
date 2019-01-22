@@ -6,7 +6,10 @@ from docify.lib.components import Component, Element
 
 
 class Formatter(object):
-    '''A generic formatter'''
+    '''Abstract class for formatter. Do not use it directly.
+
+    :param Document document: Document to format.
+    '''
 
     handlers = {}
 
@@ -16,6 +19,10 @@ class Formatter(object):
 
     @classmethod
     def format(cls, obj):
+        '''Parse and format an object.
+
+        :param Component|Document obj: Object to format.
+        '''
         if isinstance(obj, Element):
             if isinstance(obj.element, str):
                 obj.element = cls.escape(obj.element)
@@ -32,16 +39,17 @@ class Formatter(object):
 
     @classmethod
     def f(cls, obj):
-        '''An alias fo format'''
+        '''An alias to format()'''
         return cls.format(obj)
 
     @classmethod
     def escape(cls, txt):
-        '''Escape logic'''
-        return re.sub(r'((([_*]).+?\3[^_*]*)*)([_*])', '\g<1>\\\\\g<4>', txt)
+        '''Logic to escape strings. It\'s supposed to be
+        overridden by inheritence.
 
-    def handle(self, component_type, handler):
-        self.handlers[component_type] = handler
+        :param str txt: String to escape
+        '''
+        return re.sub(r'((([_*]).+?\3[^_*]*)*)([_*])', '\g<1>\\\\\g<4>', txt)
 
     def __str__(self):
         return self.doc

@@ -1,5 +1,14 @@
 class Document(object):
-    '''The base document object
+    '''The base document object.
+    It can ce passed to separate formatters which can parse
+    it into various formats.
+
+    Example usage: ::
+
+        doc = Document(Span('im a span !'))
+        print(HTML(doc))
+        print(Markdown(doc))
+        print(Whatever(doc))
 
     :param Component[] components: Components to be added in the document'''
 
@@ -16,7 +25,7 @@ class Document(object):
         return '{}({})'.format(self.__class__.__name__, self)
 
     def add(self, component):
-        '''Adds a component in the doc
+        '''Adds a component in the doc.
 
         :param Component component: Component to be added'''
 

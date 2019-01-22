@@ -41,6 +41,8 @@ DOC_TMPL = '''
 
 
 class HTMLBootstrap(Formatter):
+    '''HTMLBootstrap formatter to format into fancy static web page.'''
+
     handlers = {
         Document: lambda x: DOC_TMPL.format('\n'.join(
             map(lambda y: HTMLBootstrap.f(c.Div(y)), x.components))),
@@ -125,4 +127,8 @@ class HTMLBootstrap(Formatter):
 
     @staticmethod
     def i(depth):
+        '''Indent based on depth.
+
+        :param int depth: Depth of the object
+        '''
         return ' ' * (12 + (depth * 4))

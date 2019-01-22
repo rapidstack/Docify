@@ -9,7 +9,12 @@ DOC_TMPL = '''\
 <sup>This document is generated using [Docify](https://github.com/rapidstack/docify)</sup>
 '''
 
+
 class Markdown(Formatter):
+    '''Markdown formatter.
+    By default Document object becomes markdown text when casted into string.
+    So it's basically doing noting except adding a grumpy citation.
+    '''
     handlers = {
         Document: lambda x: DOC_TMPL.format(x)
     }

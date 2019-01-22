@@ -1,5 +1,6 @@
 class Component(object):
-    '''An abstract class for any components
+    '''An abstract class for any components.
+    Do not use this class directly.
 
     :param Component[] children: Single or collection of child components
         to be wrapped by this component.
@@ -19,15 +20,20 @@ class Component(object):
         return '{}({})'.format(self.__class__.__name__, self)
 
     def add(self, child):
-        '''Appends a component or an element as it's child
+        '''Appends a component or an element as it's child.
 
-        :param Component child: The child object to be added'''
+        :param Component child: The child object to be added.'''
 
         if isinstance(child, Component):
             child.setparent(self)
         self.children.append(child)
 
     def setdepth(self, depth):
+        '''Sets the depth of this component
+        and also updates depths of it\'s children.
+
+        :param int depth: depth to set.'''
+
         self.depth = depth
         if isinstance(self, Element):
             return
@@ -35,12 +41,26 @@ class Component(object):
             c.setdepth(depth+1)
 
     def setparent(self, parent):
+        '''Sets the reference to it\'s parent object
+        and also updates it\'s depth based on parent\'s depth.
+
+        :param Component|Document parent: Object to set as parent.'''
+
         self.parent = parent
         self.setdepth(parent.depth + 1)
 
 
 class Division(Component):
-    '''Division. Use it when you want components to be in a single section'''
+    '''Division. Use it when you want components to be in a single section.
+    Supports + operator to add an Element or merge with another Div
+
+    Example usage: ::
+        Div(Span('a')) + Span('b')
+        # Result: Div(Span('a'), Span('b'))
+
+        Div(Span('a')) + Div(Span('b'))
+        # Result: Div(Span('a'), Span('b'))
+    '''
 
     def __add__(self, component):
         div = Division(*self.children)
@@ -57,7 +77,11 @@ class Division(Component):
 
 
 class List(Component):
-    '''Abstract class for ordered and unordered list. Do not use it directly'''
+    '''Abstract class for ordered and unordered list.
+    Do not use it directly.
+
+    :param Component[] children: ListItem or Elements to add as children.:
+    '''
 
     child_idx = '{index}.'
 
@@ -67,15 +91,29 @@ class List(Component):
         super(List, self).__init__(*children)
 
     def setlevel(self, level):
+        '''Sets relative depth from parent List
+        in case it\'s nested into another List. Also updates it\'s children.
+
+        :param int level: Level to set.
+        '''
+
         self.level = level
         for c in self.children:
             isinstance(c, List) and c.setlevel(level+1)
 
     def setindex(self, index):
+        '''Sets the index in case it\'s nested in another List.
+
+        :param int index: Index to set.
+        '''
         self.index = index
 
     def add(self, child):
-        '''Add a child to the list'''
+        '''Add a child to the list.
+
+        :param List|Element child: Adds a child object
+        '''
+
         child.setparent(self)
         child.setindex(self.child_idx.format(
             index=(len(self.children) + 1)))
@@ -199,7 +237,11 @@ class Span(Element):
 
 
 class Anchor(Element):
-    '''Anchor. Similar to <a></a>'''
+    '''Anchor. Similar to <a></a>
+
+    :param Element element: Element to be wrapped.
+    :param str href: Target URL.
+    '''
 
     txt = '[{element}]({href})'
 
@@ -209,7 +251,11 @@ class Anchor(Element):
 
 
 class Image(Element):
-    '''Image. Similar to <img/>'''
+    '''Image. Similar to <img/>
+
+    :param str alt: Alternate text
+    :param str src: Source file
+    '''
 
     txt = '![{alt}]({src})'
 
@@ -244,13 +290,20 @@ class Del(Element):
 
 
 class ListItem(Element):
-    '''ListItem. Similar to <li></li>'''
+    '''ListItem. Similar to <li></li>
+
+    :param Element element: Element to be wrapped.
+    '''
 
     def __init__(self, element=''):
         super(ListItem, self).__init__(element)
         self.index = '*'
 
     def setindex(self, index):
+        '''Sets index.
+
+        :param int index: Index to set.
+        '''
         self.index = index
 
     def __str__(self):
