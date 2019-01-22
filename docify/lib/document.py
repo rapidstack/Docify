@@ -1,6 +1,6 @@
 class Document(object):
     '''The base document object.
-    It can ce passed to separate formatters which can parse
+    It can be passed as input to separate formatters which can parse
     it into various formats.
 
     Example usage: ::
