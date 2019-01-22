@@ -52,9 +52,9 @@ class Component(object):
 
 class Division(Component):
     '''Division. Use it when you want components to be in a single section.
-    Supports + operator to add an Element or merge with another Div
+    Supports + operator to add an Element or merge with another Div.
 
-    Example usage: ::
+    Example addition: ::
         Div(Span('a')) + Span('b')
         \# Div(Span('a'), Span('b'))
 
