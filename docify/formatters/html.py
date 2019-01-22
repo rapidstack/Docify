@@ -10,7 +10,7 @@ DOC_TMPL = '''\
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
+
         <title>Docify Document</title>
     </head>
     <body>
@@ -20,7 +20,7 @@ DOC_TMPL = '''\
                 <p>&nbsp;</p>
                 <small>
                     <cite>
-                        Generated using
+                        This document generated using
                         <a href="https://github.com/rapidstack/docify">
                             Docify
                         </a>
@@ -55,11 +55,11 @@ class HTML(Formatter):
         c.Ul: lambda x: '{0}<ul>\n{1}\n{0}</ul>'.format(
             HTML.i(x.depth), '\n'.join(map(HTML.f, x.children))),
 
-        c.H1: lambda x: '{0}<h1>\n{1}\n{0}</h1>'.format(
-            HTML.i(x.depth), HTML.f(x.element)),
+        c.H1: lambda x: '{0}<h1>\n{1}\n{0}</h1>{2}'.format(
+            HTML.i(x.depth), HTML.f(x.element), HTML.f(c.Hr())),
 
-        c.H2: lambda x: '{0}<h2>\n{1}\n{0}</h2>'.format(
-            HTML.i(x.depth), HTML.f(x.element)),
+        c.H2: lambda x: '{0}<h2>\n{1}\n{0}</h2>{2}'.format(
+            HTML.i(x.depth), HTML.f(x.element), HTML.f(c.Hr())),
 
         c.H3: lambda x: '{0}<h3>\n{1}\n{0}</h3>'.format(
             HTML.i(x.depth), HTML.f(x.element)),
@@ -82,13 +82,13 @@ class HTML(Formatter):
         c.Br: lambda x: '{0}<br />'.format(HTML.i(x.depth)),
 
         c.Hr: lambda x: '{0}<hr />'.format(HTML.i(x.depth)),
-        
-        c.Code: lambda x: '{0}<code>\n{1}\n{0}</code>'.format(
+
+        c.Code: lambda x: '{0}<code>{1}</code>'.format(
             HTML.i(x.depth), HTML.f(x.element)),
-        
-        c.Pre: lambda x: '{0}<pre>\n{1}\n{0}</pre>'.format(
+
+        c.Pre: lambda x: '{0}<pre>{1}</pre>'.format(
             HTML.i(x.depth), HTML.f(x.element)),
-        
+
         c.Blockquote: lambda x: '{0}<blockquote>\n{1}\n{0}</blockquote>'.format(
             HTML.i(x.depth), HTML.f(x.element)),
 

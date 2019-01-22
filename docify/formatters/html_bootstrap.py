@@ -12,7 +12,7 @@ DOC_TMPL = '''
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
+
         <title>Docify Document</title>
     </head>
     <body>
@@ -23,7 +23,7 @@ DOC_TMPL = '''
                 <p>&nbsp;</p>
                 <small>
                     <cite>
-                        Generated using
+                        This document is generated using
                         <a href="https://github.com/rapidstack/docify">
                             Docify
                         </a>
@@ -42,8 +42,8 @@ DOC_TMPL = '''
 
 class HTMLBootstrap(Formatter):
     handlers = {
-        Document: lambda x: DOC_TMPL.format(
-            '\n'.join(map(lambda y: HTMLBootstrap.f(c.Div(y)), x.components))),
+        Document: lambda x: DOC_TMPL.format('\n'.join(
+            map(lambda y: HTMLBootstrap.f(c.Div(y)), x.components))),
 
         c.Nbsp: lambda x: '&nbsp;',
 
@@ -51,22 +51,29 @@ class HTMLBootstrap(Formatter):
             HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
 
         c.A: lambda x: '{0}<a href="{1}">\n{2}\n{0}</a>'.format(
-            HTMLBootstrap.i(x.depth), x.href.replace('"', '\\"'), HTMLBootstrap.f(x.element)),
+            HTMLBootstrap.i(x.depth), x.href.replace('"', '\\"'),
+            HTMLBootstrap.f(x.element)),
 
-        c.Div: lambda x: '{0}<div class="row">\n{1}\n{0}</div>'.format(
-            HTMLBootstrap.i(x.depth), '\n'.join(map(HTMLBootstrap.f, x.children))),
+        c.Div: lambda x: ('{0}<div class="row"><div class="col-md-12">'
+                          '\n{1}\n{0}</div></div>').format(
+            HTMLBootstrap.i(x.depth),
+            '\n'.join(map(HTMLBootstrap.f, x.children))),
 
         c.Ol: lambda x: '{0}<ol>\n{1}\n{0}</ol>'.format(
-            HTMLBootstrap.i(x.depth), '\n'.join(map(HTMLBootstrap.f, x.children))),
+            HTMLBootstrap.i(x.depth), '\n'.join(map(
+                HTMLBootstrap.f, x.children))),
 
         c.Ul: lambda x: '{0}<ul>\n{1}\n{0}</ul>'.format(
-            HTMLBootstrap.i(x.depth), '\n'.join(map(HTMLBootstrap.f, x.children))),
+            HTMLBootstrap.i(x.depth), '\n'.join(map(
+                HTMLBootstrap.f, x.children))),
 
-        c.H1: lambda x: '{0}<h1>\n{1}\n{0}</h1>'.format(
-            HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
+        c.H1: lambda x: '{0}<h1>\n{1}\n{0}</h1>{2}'.format(
+            HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element),
+            HTMLBootstrap.f(c.Hr())),
 
-        c.H2: lambda x: '{0}<h2>\n{1}\n{0}</h2>'.format(
-            HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
+        c.H2: lambda x: '{0}<h2>\n{1}\n{0}</h2>{2}'.format(
+            HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element),
+            HTMLBootstrap.f(c.Hr())),
 
         c.H3: lambda x: '{0}<h3>\n{1}\n{0}</h3>'.format(
             HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
@@ -90,14 +97,14 @@ class HTMLBootstrap(Formatter):
 
         c.Hr: lambda x: '{0}<hr />'.format(HTMLBootstrap.i(x.depth)),
 
-        c.Code: lambda x: '{0}<code class="bg-light">\n{1}\n{0}</code>'.format(
+        c.Code: lambda x: '{0}<code class="bg-light rounded p-1">{1}</code>'.format(
             HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
 
-        c.Pre: lambda x: '{0}<pre class="bg-light">\n{1}\n{0}</pre>'.format(
+        c.Pre: lambda x: '{0}<pre class="bg-light rounded p-3">{1}</pre>'.format(
             HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
 
-        c.Blockquote: lambda x: ('{0}<blockquote class="blockquote">'
-            '\n{1}\n{0}</blockquote>').format(
+        c.Blockquote: lambda x: ('{0}<blockquote>'
+                                 '\n{1}\n{0}</blockquote>').format(
             HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
 
         c.Del: lambda x: '{0}<del>\n{1}\n{0}</del>'.format(
@@ -107,7 +114,8 @@ class HTMLBootstrap(Formatter):
             HTMLBootstrap.i(x.depth), HTMLBootstrap.f(x.element)),
 
         c.Img: lambda x: '{0}<img src="{1}" alt="{2}" />'.format(
-            HTMLBootstrap.i(x.depth), x.src.replace('"', '\\"'), x.alt.replace('"', '\\"'))
+            HTMLBootstrap.i(x.depth), x.src.replace('"', '\\"'),
+            x.alt.replace('"', '\\"'))
     }
 
     @classmethod

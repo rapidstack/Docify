@@ -6,7 +6,7 @@ DOC_TMPL = '''\
 {}
 
 
-<sup>Generated using [Docify](https://github.com/rapidstack/docify)</sup>
+<sup>This document is generated using [Docify](https://github.com/rapidstack/docify)</sup>
 '''
 
 class Markdown(Formatter):

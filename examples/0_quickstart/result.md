@@ -45,3 +45,7 @@ Inline code: ``:(){ :|:& };:``
 [google](https://google.com)
 
 [![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)](https://img.shields.io/badge/docify-image_test-green.svg)
+
+
+<sup>This document is generated using [Docify](https://github.com/rapidstack/docify)</sup>
+

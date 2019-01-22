@@ -1,6 +1,6 @@
 import os
 import sys
-from subprocess import Popen
+from subprocess import Popen, PIPE
 
 
 EXAMPLES = [
@@ -8,19 +8,26 @@ EXAMPLES = [
     '1_readme'
 ]
 
-FORMATS = [
-    'markdown',
-    'html',
-    'htmlbootstrap'
-]
+FORMATS = {
+    'markdown': 'result.md',
+    'html': 'result.html',
+    'htmlbootstrap': 'result.withbootstrap.html'
+}
 
 if __name__ == '__main__':
 
     for e in EXAMPLES:
-        examplepath = os.path.join('.', 'examples', e, 'doc.py')
+        examplepath = os.path.join('examples', e)
+        docpath = os.path.join(examplepath, 'doc.py')
 
-        sys.stdout.write('\n* ' + examplepath + '-------------\n')
+        sys.stdout.write('\n* ' + docpath + ' -------------\n')
 
-        assert Popen(['python', examplepath]).wait() == 0
+        assert Popen(['python', docpath]).wait() == 0
         for f in FORMATS:
-            assert Popen(['python', examplepath, f]).wait() == 0
+            resultpath = os.path.join(examplepath, FORMATS[f])
+            p = Popen(['python', docpath, f], stdout=PIPE)
+            stdout, _ = p.communicate()
+            assert p.returncode == 0
+
+            with open(resultpath, 'wb') as f:
+                f.write(stdout)
