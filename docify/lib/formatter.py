@@ -11,10 +11,13 @@ class Formatter(object):
     :param Document document: Document to format.
     '''
 
-    handlers = {}
+    @classmethod
+    def handlers(cls):
+        return {
+            str: lambda x: re.sub(r'((([_*]).+?\3[^_*]*)*)([_*])', '\g<1>\\\\\g<4>', x)
+        }
 
     def __init__(self, document):
-        self.handlers = self.handlers
         self.doc = self.format(deepcopy(document))
 
     @classmethod
@@ -23,33 +26,13 @@ class Formatter(object):
 
         :param Component|Document obj: Object to format.
         '''
-        if isinstance(obj, Element):
-            if isinstance(obj.element, str):
-                obj.element = cls.escape(obj.element)
-        elif isinstance(obj, Document):
-            obj.components = map(cls.format, obj.components)
-        elif isinstance(obj, Component):
-            obj.children = map(cls.format, obj.children)
 
-        t = type(obj)
-        if t in cls.handlers:
-            obj = cls.handlers[t](obj)
-
-        return str(obj)
+        return cls.handlers().get(type(obj), str)(obj)
 
     @classmethod
     def f(cls, obj):
         '''An alias to format()'''
         return cls.format(obj)
-
-    @classmethod
-    def escape(cls, txt):
-        '''Logic to escape strings. It\'s supposed to be
-        overridden by inheritence.
-
-        :param str txt: String to escape
-        '''
-        return re.sub(r'((([_*]).+?\3[^_*]*)*)([_*])', '\g<1>\\\\\g<4>', txt)
 
     def __str__(self):
         return self.doc

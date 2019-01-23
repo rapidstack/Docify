@@ -1,6 +1,8 @@
+from copy import deepcopy
+
+
 class Component(object):
-    '''An abstract class for any components.
-    Do not use this class directly.
+    '''An abstract class for any component. Do not use this class directly.
 
     :param Component[] children: Single or collection of child components
         to be wrapped by this component.
@@ -30,19 +32,17 @@ class Component(object):
 
     def setdepth(self, depth):
         '''Sets the depth of this component
-        and also updates depths of it\'s children.
+        and also updates depths of it's children.
 
         :param int depth: depth to set.'''
 
         self.depth = depth
-        if isinstance(self, Element):
-            return
         for c in self.children:
-            c.setdepth(depth+1)
+            isinstance(c, Component) and c.setdepth(depth+1)
 
     def setparent(self, parent):
-        '''Sets the reference to it\'s parent object
-        and also updates it\'s depth based on parent\'s depth.
+        '''Sets the reference to it's parent object
+        and also updates it's depth based on parent's depth.
 
         :param Component|Document parent: Object to set as parent.'''
 
@@ -50,38 +50,54 @@ class Component(object):
         self.setdepth(parent.depth + 1)
 
 
-class Division(Component):
-    '''Division. Use it when you want components to be in a single section.
-    Supports + operator to add an Element or merge with another Div.
+class Paragraph(Component):
+    '''Paragraph, Similar to <p></p>
+
+    Example usage: ::
+
+        p = P('im a paragraph.', 'Hail Docify!')
+    '''
+
+    def __str__(self):
+        return '{}\n'.format('\n'.join(map(str, self.children)))
+
+
+class Span(Component):
+    '''Similar to <span></span>.
+    Supports ``+`` operator to return new `Span` with added child.
+
+    Example usage: ::
+
+        s = Span('im a span.', 'Hail Docify!')
 
     Example addition: ::
 
-        Div(Span('a')) + Span('b')
-        # Result: Div(Span('a'), Span('b'))
-
-        Div(Span('a')) + Div(Span('b'))
-        # Result: Div(Span('a'), Span('b'))
+        Span('Hail') + B('Docify') + I('!')
+        # Result: Span('Hail', Nbsp(), B('Docify'), I('!'))
     '''
-
-    def __add__(self, component):
-        div = Division(*self.children)
-        div.setparent(self.children[0].parent)
-        if isinstance(component, Div):
-            for c in component.children:
-                div.add(c)
-        else:
-            div.add(component)
-        return div
-
     def __str__(self):
         return ''.join(map(str, self.children))
+
+    def __add__(self, element):
+        obj = deepcopy(self)
+        obj.add(element)
+        return obj
+
+    def add(self, child):
+        '''Appends a component or an element as it's child.
+
+        :param Component child: The child object to be added.'''
+
+        if isinstance(child, Component):
+            child.setparent(self)
+        self.children.append(child)
 
 
 class List(Component):
     '''Abstract class for ordered and unordered list.
     Do not use it directly.
 
-    :param Component[] children: ListItem or Elements to add as children.:
+    :param Component[] children: `ListItem` or `List` to add as children.:
     '''
 
     child_idx = '{index}.'
@@ -93,7 +109,7 @@ class List(Component):
 
     def setlevel(self, level):
         '''Sets relative depth from parent List
-        in case it\'s nested into another List. Also updates it\'s children.
+        in case it's nested into another List. Also updates it's children.
 
         :param int level: Level to set.
         '''
@@ -103,7 +119,7 @@ class List(Component):
             isinstance(c, List) and c.setlevel(level+1)
 
     def setindex(self, index):
-        '''Sets the index in case it\'s nested in another List.
+        '''Sets the index in case it's nested in another List.
 
         :param int index: Index to set.
         '''
@@ -112,7 +128,7 @@ class List(Component):
     def add(self, child):
         '''Add a child to the list.
 
-        :param List|Element child: Adds a child object
+        :param List|ListItem child: Adds a child object
         '''
 
         child.setparent(self)
@@ -124,21 +140,35 @@ class List(Component):
 
 
 class OrderedList(List):
-    '''OrderedList. Similar to <ol></ol>'''
+    '''OrderedList. Similar to <ol></ol>.
+
+    Example usage: ::
+
+        ol = Ol(Li('item 1'), Li('item 2'), Ol(Li('item 2.1')))
+    '''
     pass
 
 
 class UnorderedList(List):
-    '''UnorderedList. Similar to <ul></ul>'''
+    '''UnorderedList. Similar to <ul></ul>.
+
+    Example usage: ::
+        ul = Ul(Li('item 1'), Li('item 2'), Ul(Li('item 2.1')))
+    '''
 
     child_idx = '*'
 
 
 class Element(Component):
-    '''An abstract class for any single element.
-    Do not use it directly.
+    '''An abstract class for any single element. Do not use it directly.
+    Supports ``+`` operator to return new `Span` with added component.
 
     :param Element element: Element to be wrapped.
+
+    Example addition: ::
+
+        I('Hail') + Nbsp() + B('Docify!')
+        # Result: Span(I('Hail'), Nbsp(), B('Docify!'))
     '''
 
     txt = '{element}'
@@ -153,10 +183,11 @@ class Element(Component):
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self)
 
-    def __add__(self, o):
-        if isinstance(o, Div):
-            return Div(self, *o.elements)
-        return Div(self, o)
+    def __add__(self, element):
+        span = Span(self)
+        span.setparent(self.parent)
+        span.add(element)
+        return span
 
 
 class Header(Element):
@@ -232,17 +263,15 @@ class HorizontalRule(Element):
     txt = '-' * 50
 
 
-class Span(Element):
-    '''Division. Similar to <span></span>'''
-
-    txt = '{element}'
-
-
 class Anchor(Element):
     '''Anchor. Similar to <a></a>
 
     :param Element element: Element to be wrapped.
     :param str href: Target URL.
+
+    Example usage: ::
+
+        a = A('Google', href='https://google.com')
     '''
 
     txt = '[{element}]({href})'
@@ -257,6 +286,10 @@ class Image(Element):
 
     :param str alt: Alternate text
     :param str src: Source file
+
+    Example usage: ::
+
+        i = Img(src='https://img.shields.io/badge/docify-image_test-green.svg', alt='Image test')
     '''
 
     txt = '![{alt}]({src})'
@@ -276,7 +309,8 @@ class Pre(Element):
 class Code(Element):
     '''Code. Similar to <code></code>'''
 
-    txt = '``{element}``'
+    def __str_(self):
+        return ('```\n{}\n```' if isinstance(self.parent, Pre) else '``{}``').format(self.element)
 
 
 class Blockquote(Element):
@@ -320,7 +354,7 @@ class NoBreakSpace(Element):
 
 
 # Aliases
-Div = Division
+P = Paragraph
 Ol = OrderedList
 Ul = UnorderedList
 Br = Break
@@ -335,5 +369,7 @@ H4 = Header4
 H5 = Header5
 H6 = Header6
 B = Bold
+Strong = Bold
 I = Italic
+Em = Italic
 Nbsp = NoBreakSpace

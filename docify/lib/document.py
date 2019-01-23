@@ -1,3 +1,6 @@
+from docify.lib.components import Span
+
+
 class Document(object):
     '''The base document object.
     It can be passed as input to separate formatters which can parse
@@ -5,7 +8,7 @@ class Document(object):
 
     Example usage: ::
 
-        doc = Document(Span('im a span !'))
+        doc = Document(P('Hail Docify!'))
         print(HTML(doc))
         print(Markdown(doc))
         print(Whatever(doc))
@@ -19,7 +22,7 @@ class Document(object):
             self.add(c)
 
     def __str__(self):
-        return '\n\n'.join(map(str, self.components))
+        return '\n'.join(map(str, self.components))
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self)
@@ -29,5 +32,7 @@ class Document(object):
 
         :param Component component: Component to be added'''
 
+        if isinstance(component, str):
+            component = Span(component)
         component.setparent(self)
         self.components.append(component)

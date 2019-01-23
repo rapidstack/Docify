@@ -15,6 +15,7 @@ class Markdown(Formatter):
     By default Document object becomes markdown text when casted into string.
     So it's basically doing noting except adding a grumpy citation.
     '''
-    handlers = {
-        Document: lambda x: DOC_TMPL.format(x)
-    }
+
+    @classmethod
+    def handlers(cls):
+        return {Document: lambda x: DOC_TMPL.format(x)}

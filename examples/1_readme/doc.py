@@ -8,9 +8,8 @@ from docify.formatters.html_bootstrap import HTMLBootstrap
 
 doc = Document(
     c.H1('Docify'),
-    c.Span('Simple, flexible python document generator'),
-    c.Div(c.Nbsp()),
-    c.Div(
+    c.P(c.Span('Simple, flexible python document generator')),
+    c.P(
         c.A(c.Img(alt='PyPI version', src='https://img.shields.io/pypi/v/Docify.svg'),
             href='https://pypi.org/project/Docify'),
         c.Nbsp(),
@@ -21,13 +20,11 @@ doc = Document(
         c.A(c.Img(alt='Documentation Status',
                   src='https://readthedocs.org/projects/docify/badge/?version=latest'),
             href='https://docify.readthedocs.io/en/latest/?badge=latest')),
-    c.Div(c.Nbsp()),
     c.H2('Introduction'),
-    c.Div(
+    c.P(
         c.Span('Docify helps you write documents in different formats from a'),
         c.Nbsp(),
         c.Bold('Python object')),
-    c.Div(c.Nbsp()),
     c.Blockquote(
         c.B('Note:')
         + c.Nbsp()
@@ -37,19 +34,15 @@ doc = Document(
         + c.I('documentation')
         + c.Span(' generator, nor a document ')
         + c.I('parser')),
-    c.Div(c.Nbsp()),
     c.H2('Installation'),
-    c.Pre('pip install docify'),
-    c.Div(c.Nbsp()),
+    c.P(c.Pre(c.Code('pip install docify'))),
     c.H2('Usage & Examples'),
-    c.B(c.A('Read API documentation on Read the Docs',
-            href='https://docify.readthedocs.io')),
-    c.Div(c.Nbsp()),
-    c.B(c.A('Find quickstart and more examples here',
-            href='https://github.com/rapidstack/docify/tree/master/examples')),
-    c.Div(c.Nbsp()),
-    c.B('Try examples like this'),
-    c.Pre('python doc.py markdown\n\npython doc.py htmlbootstrap'))
+    c.P(c.B(c.A('Read API documentation on Read the Docs',
+            href='https://docify.readthedocs.io'))),
+    c.P(c.B(c.A('Find quickstart and more examples here',
+            href='https://github.com/rapidstack/docify/tree/master/examples'))),
+    c.P(c.B('Try examples like this')),
+    c.P(c.Pre(c.Code('python doc.py markdown\n\npython doc.py htmlbootstrap'))))
 
 
 if __name__ == '__main__':
