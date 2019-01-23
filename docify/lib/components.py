@@ -16,7 +16,7 @@ class Component(object):
             self.add(c)
 
     def __str__(self):
-        return '\n'.join(map(str, self.children))
+        return str(Br()).join(map(str, self.children))
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self)
@@ -59,7 +59,7 @@ class Paragraph(Component):
     '''
 
     def __str__(self):
-        return '{}\n'.format('\n'.join(map(str, self.children)))
+        return '{}\n\n'.format(str(Br()).join(map(str, self.children)))
 
 
 class Span(Component):
@@ -194,49 +194,49 @@ class Header(Element):
     '''Header, Do not use it directly. It's supposed to be an abstract class'''
 
     header_type = 1
-    txt = '# {element}'
+    txt = '# {element}\n'
 
 
 class Header1(Header):
     '''Header1. Similar to <h1></h1>'''
 
     header_type = 1
-    txt = '{element}\n===================='
+    txt = '{element}\n====================\n'
 
 
 class Header2(Header):
     '''Header2. Similar to <h2></h2>'''
 
     header_type = 2
-    txt = '{element}\n--------------------'
+    txt = '{element}\n--------------------\n'
 
 
 class Header3(Header):
     '''Header3. Similar to <h3></h3>'''
 
     header_type = 3
-    txt = '### {element}'
+    txt = '### {element}\n'
 
 
 class Header4(Header):
     '''Header4. Similar to <h4></h4>'''
 
     header_type = 4
-    txt = '#### {element}'
+    txt = '#### {element}\n'
 
 
 class Header5(Header):
     '''Header5. Similar to <h5></h5>'''
 
     header_type = 5
-    txt = '##### {element}'
+    txt = '##### {element}\n'
 
 
 class Header6(Header):
     '''Header6. Similar to <h6></h6>'''
 
     header_type = 6
-    txt = '###### {element}'
+    txt = '###### {element}\n'
 
 
 class Italic(Element):
@@ -260,7 +260,7 @@ class Break(Element):
 class HorizontalRule(Element):
     '''Horizontal Rule. Similar to <hr/>'''
 
-    txt = '-' * 50
+    txt = ('-' * 50) + '\n'
 
 
 class Anchor(Element):
@@ -303,20 +303,22 @@ class Image(Element):
 class Pre(Element):
     '''Pre. Similar to <pre></pre>'''
 
-    txt = '```\n{element}\n```'
+    txt = '```\n{element}\n```\n'
 
 
 class Code(Element):
     '''Code. Similar to <code></code>'''
 
     def __str_(self):
-        return ('```\n{}\n```' if isinstance(self.parent, Pre) else '``{}``').format(self.element)
+        if isinstance(self.parent, Pre):
+            return self.element
+        return '``{}``'.format(self.element)
 
 
 class Blockquote(Element):
     '''Blockquote. Similar to <blockquote></blockquote>'''
 
-    txt = '> {element}'
+    txt = '> {element}\n'
 
 
 class Del(Element):

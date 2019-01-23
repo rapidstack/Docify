@@ -22,7 +22,7 @@ class Document(object):
             self.add(c)
 
     def __str__(self):
-        return '\n'.join(map(str, self.components))
+        return str(Break()).join(map(str, self.components))
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self)

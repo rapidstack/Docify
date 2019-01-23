@@ -27,6 +27,7 @@ doc = Document(
             c.Ol(
                 c.Li('Item 2.2.1'),
                 c.Li(c.A('Item 2.2.2', href='#'))))),
+    c.Br(),
     c.Img(
         src='https://img.shields.io/badge/docify-image_test-green.svg',
         alt='Image Test'),

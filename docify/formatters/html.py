@@ -41,7 +41,7 @@ class HTML(Formatter):
             str: cgi.escape,
 
             Document: lambda x: DOC_TMPL.format(
-                cls.f(c.Br()).join(map(cls.f, x.components))),
+                '\n'.join(map(cls.f, x.components))),
 
             c.Nbsp: lambda x: '&nbsp;',
 
@@ -51,7 +51,7 @@ class HTML(Formatter):
                 x.href.replace('"', '\\"'), cls.f(x.element)),
 
             c.P: lambda x: '<p>\n{}\n</p>'.format(
-                cls.f(c.Br()).join(map(cls.f, x.children))),
+                '\n'.join(map(cls.f, x.children))),
 
             c.Ol: lambda x: '<ol>\n{}\n</ol>'.format(
                 '\n'.join(map(cls.f, x.children))),

@@ -49,7 +49,7 @@ class HTMLBootstrap(HTML):
 
         handlers.update({
             Document: lambda x: DOC_TMPL.format(
-                cls.f(c.Br()).join(map(cls.f, x.components))),
+                '\n'.join(map(cls.f, x.components))),
 
             c.Pre: lambda x: '<pre class="bg-light rounded">{}</pre>'.format(cls.f(x.element)),
             c.Code: lambda x: '<code class="bg-light rounded">{}</code>'.format(cls.f(x.element))
