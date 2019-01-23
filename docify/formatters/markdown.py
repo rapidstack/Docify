@@ -6,7 +6,7 @@ DOC_TMPL = '''\
 {}
 
 
-<sup>This document is generated using [Docify](https://github.com/rapidstack/docify)</sup>
+This document is generated using [Docify](https://github.com/rapidstack/docify)
 '''
 
 
