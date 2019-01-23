@@ -1,4 +1,4 @@
-from docify.lib.components import Span
+from docify.lib.components import Span, Break
 
 
 class Document(object):

@@ -8,41 +8,41 @@ from docify.formatters.html_bootstrap import HTMLBootstrap
 
 doc = Document(
     c.H1('Docify'),
-    c.P(c.Span('Simple, flexible python document generator')),
     c.P(
+        c.Span('Simple, flexible python document generator'),
+        c.Span(c.Nbsp()),
         c.A(c.Img(alt='PyPI version', src='https://img.shields.io/pypi/v/Docify.svg'),
-            href='https://pypi.org/project/Docify'),
-        c.Nbsp(),
-        c.A(c.Img(alt='Build Status',
+            href='https://pypi.org/project/Docify')
+        + c.A(c.Img(alt='Build Status',
                   src='https://travis-ci.org/rapidstack/Docify.svg?branch=master'),
-            href='https://travis-ci.org/rapidstack/Docify'),
-        c.Nbsp(),
-        c.A(c.Img(alt='Documentation Status',
+            href='https://travis-ci.org/rapidstack/Docify')
+        + c.A(c.Img(alt='Documentation Status',
                   src='https://readthedocs.org/projects/docify/badge/?version=latest'),
             href='https://docify.readthedocs.io/en/latest/?badge=latest')),
     c.H2('Introduction'),
     c.P(
-        c.Span('Docify helps you write documents in different formats from a'),
-        c.Nbsp(),
-        c.Bold('Python object')),
-    c.Blockquote(
-        c.B('Note:')
+        c.Span('Docify helps you write documents in different formats from a')
         + c.Nbsp()
-        + c.Span('It\'s not a document ')
-        + c.I('converter')
-        + c.Span(', neither a ')
-        + c.I('documentation')
-        + c.Span(' generator, nor a document ')
-        + c.I('parser')),
+        + c.Bold('Python object'),
+        c.Blockquote(
+            c.B('Note:')
+            + c.Nbsp()
+            + c.Span('It\'s not a document ')
+            + c.I('converter')
+            + c.Span(', neither a ')
+            + c.I('documentation')
+            + c.Span(' generator, nor a document ')
+            + c.I('parser'))),
     c.H2('Installation'),
     c.P(c.Pre(c.Code('pip install docify'))),
     c.H2('Usage & Examples'),
     c.P(c.B(c.A('Read API documentation on Read the Docs',
-            href='https://docify.readthedocs.io'))),
-    c.P(c.B(c.A('Find quickstart and more examples here',
+            href='https://docify.readthedocs.io')),
+        c.Span(c.Nbsp()),
+        c.B(c.A('Find quickstart and more examples here',
             href='https://github.com/rapidstack/docify/tree/master/examples'))),
-    c.P(c.B('Try examples like this')),
-    c.P(c.Pre(c.Code('python doc.py markdown\n\npython doc.py htmlbootstrap'))))
+    c.P(c.B('Try examples like this'),
+        c.Pre(c.Code('python doc.py markdown\npython doc.py htmlbootstrap'))))
 
 
 if __name__ == '__main__':
