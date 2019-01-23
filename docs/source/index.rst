@@ -43,7 +43,7 @@ Installation
 Examples
 ----------------
 
-**`Find quickstart and more examples here <https://github.com/rapidstack/docify/tree/master/examples>`_**
+`Find quickstart and more examples here <https://github.com/rapidstack/docify/tree/master/examples>`_
 
 **Try examples like this**
 
