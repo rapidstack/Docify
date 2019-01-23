@@ -5,7 +5,8 @@ Simple, flexible python document generator
 
 
 [![PyPI version](https://img.shields.io/pypi/v/Docify.svg)](https://pypi.org/project/Docify)[![Build Status](https://travis-ci.org/rapidstack/Docify.svg?branch=master)](https://travis-ci.org/rapidstack/Docify)[![Documentation Status](https://readthedocs.org/projects/docify/badge/?version=latest)](https://docify.readthedocs.io/en/latest/?badge=latest)
- 
+
+
 
 
 Introduction
@@ -14,7 +15,6 @@ Introduction
 Docify helps you write documents in different formats from a **Python object**
 > **Note:** It's not a document *converter*, neither a *documentation* generator, nor a document *parser*
 
- 
 
 
 Installation
@@ -24,7 +24,6 @@ Installation
 pip install docify
 ```
 
- 
 
 
 Usage & Examples
@@ -36,7 +35,6 @@ Usage & Examples
 **[Find quickstart and more examples here](https://github.com/rapidstack/docify/tree/master/examples)**
 
 
- 
 
 
 **Try examples like this**
