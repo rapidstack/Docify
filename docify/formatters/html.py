@@ -50,13 +50,13 @@ class HTML(Formatter):
             c.A: lambda x: '<a href="{}">{}</a>'.format(
                 x.href.replace('"', '\\"'), cls.f(x.element)),
 
-            c.P: lambda x: '<p>{}</p>'.format(
+            c.P: lambda x: '<p>\n{}\n</p>'.format(
                 cls.f(c.Br()).join(map(cls.f, x.children))),
 
-            c.Ol: lambda x: '<ol>{}</ol>'.format(
+            c.Ol: lambda x: '<ol>\n{}\n</ol>'.format(
                 '\n'.join(map(cls.f, x.children))),
 
-            c.Ul: lambda x: '<ul>{}</ul>'.format(
+            c.Ul: lambda x: '<ul>\n{}\n</ul>'.format(
                 '\n'.join(map(cls.f, x.children))),
 
             c.H1: lambda x: '<h1>{}</h1>'.format(cls.f(x.element)),
@@ -89,7 +89,7 @@ class HTML(Formatter):
             c.Del: lambda x: '<del>{}</del>'.format(cls.f(x.element)),
 
             c.Span: lambda x: '<span>{}</span>'.format(
-                '\n'.join(map(cls.f, x.children))),
+                ''.join(map(cls.f, x.children))),
 
             c.Img: lambda x: '<img src="{}" alt="{}" />'.format(
                 x.src.replace('"', '\\"'), x.alt.replace('"', '\\"'))
