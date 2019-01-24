@@ -40,15 +40,15 @@ doc = Document(
     c.Section(
         c.H2('Installation')
         + c.Pre(c.Code('pip install docify'))),
-    
+
     c.Section(
         c.H2('Usage & Examples')
         + c.Span(
             c.B(c.A('Read API documentation on Read the Docs',
-                href='https://docify.readthedocs.io')),
+                    href='https://docify.readthedocs.io')),
             c.Br(),
             c.B(c.A('Find quickstart and more examples here',
-                href='https://github.com/rapidstack/docify/tree/master/examples')))
+                    href='https://github.com/rapidstack/docify/tree/master/examples')))
         + c.Br(),
         c.B('Try examples like this'),
         c.Pre(c.Code('python doc.py markdown\npython doc.py htmlbootstrap'))))

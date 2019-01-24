@@ -47,9 +47,9 @@ doc = Document(
     c.Hr(),
 
     c.A('google', href='https://google.com'),
-    
+
     c.Br(),
-    
+
     c.A(c.Img(
         src='https://img.shields.io/badge/docify-image_test-green.svg',
         alt='Image Test'),
@@ -67,4 +67,3 @@ if __name__ == '__main__':
         sys.stdout.write(str(formatters[sys.argv[1]](doc)) + '\n')
     else:
         sys.stdout.write(str(doc) + '\n')
-
