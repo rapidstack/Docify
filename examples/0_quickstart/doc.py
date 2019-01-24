@@ -44,6 +44,8 @@ doc = Document(
         src='https://img.shields.io/badge/docify-image_test-green.svg',
         alt='Image Test'),
 
+    c.Br(),
+
     c.Hr(),
 
     c.A('google', href='https://google.com'),

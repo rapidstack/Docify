@@ -39,7 +39,9 @@ Span->Nested span
 
       2. [Item 2.2.2](#)
 
-![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)--------------------------------------------------
+![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)
+
+--------------------------------------------------
 [google](https://google.com)
 
 [![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)](https://img.shields.io/badge/docify-image_test-green.svg)
