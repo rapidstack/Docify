@@ -16,7 +16,7 @@ class Component(object):
             self.add(c)
 
     def __str__(self):
-        return str(Br()).join(map(str, self.children))
+        return '\n'.join(map(str, self.children))
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self)
@@ -50,31 +50,38 @@ class Component(object):
         self.setdepth(parent.depth + 1)
 
 
-class Paragraph(Component):
-    '''Paragraph, Similar to <p></p>
+class Section(Component):
+    '''Section. Similar to <section></section>
+    It joins all it's children with with new-line equivalent.
 
     Example usage: ::
 
-        p = P('im a paragraph.', 'Hail Docify!')
+        s = Section('a', 'b', 'c')
+        # Result: <section>a<br />b<br />c</section>
     '''
 
     def __str__(self):
-        return '{}\n\n'.format(str(Br()).join(map(str, self.children)))
+        return '{}\n\n'.format('\n'.join(map(str, self.children)))
 
 
 class Span(Component):
     '''Similar to <span></span>.
+    It joins all it's children without any separator.
+    So when we do Element() + Element(), we get Span(Element(), Element()).
     Supports ``+`` operator to return new `Span` with added child.
 
     Example usage: ::
 
-        s = Span('im a span.', 'Hail Docify!')
+        s = Span('im a span.', Nbsp(), 'Hail Docify!')
+        # Result: 'im a span. Hail Docify!'
 
     Example addition: ::
 
-        Span('Hail') + B('Docify') + I('!')
+        Span('Hail') + Nbsp() + B('Docify') + I('!')
         # Result: Span('Hail', Nbsp(), B('Docify'), I('!'))
+        # Result: 'Hail <b>Docify</b><i>!</i>'
     '''
+
     def __str__(self):
         return ''.join(map(str, self.children))
 
@@ -181,7 +188,7 @@ class Element(Component):
         return self.txt.format(**self.__dict__)
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self)
+        return '\n{}({})'.format(self.__class__.__name__, self)
 
     def __add__(self, element):
         span = Span(self)
@@ -251,16 +258,19 @@ class Bold(Element):
     txt = '**{element}**'
 
 
-class Break(Element):
-    '''Break. Similar to <br />'''
-
-    txt = '\n'
-
-
 class HorizontalRule(Element):
     '''Horizontal Rule. Similar to <hr/>'''
 
     txt = ('-' * 50) + '\n'
+
+
+class Break(Element):
+    '''Break. Similar to <br />
+    Try to avoid using it as much as possible as different
+    formats interpretes it differently. Use `Section` instead.
+    '''
+
+    txt = '\n'
 
 
 class Anchor(Element):
@@ -356,11 +366,10 @@ class NoBreakSpace(Element):
 
 
 # Aliases
-P = Paragraph
 Ol = OrderedList
 Ul = UnorderedList
-Br = Break
 Hr = HorizontalRule
+Br = Break
 Img = Image
 A = Anchor
 Li = ListItem

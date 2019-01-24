@@ -1,9 +1,9 @@
-from docify.lib.components import Span, Break
+from docify.lib.components import Span
 
 
 class Document(object):
     '''The base document object.
-    It can be passed as input to separate formatters which can parse
+    It can be passed as input to different formatters which can parse
     it into various formats.
 
     Example usage: ::
@@ -22,7 +22,7 @@ class Document(object):
             self.add(c)
 
     def __str__(self):
-        return str(Break()).join(map(str, self.components))
+        return ''.join(map(str, self.components))
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self)

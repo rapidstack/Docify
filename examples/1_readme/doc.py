@@ -7,46 +7,51 @@ from docify.formatters.html_bootstrap import HTMLBootstrap
 
 
 doc = Document(
-    c.H1('Docify'),
-    c.Span('Simple, flexible python document generator'),
-    c.Br(),
-    c.A(c.Img(alt='PyPI version', src='https://img.shields.io/pypi/v/Docify.svg'),
-        href='https://pypi.org/project/Docify')
-    + c.A(c.Img(alt='Build Status',
-                src='https://travis-ci.org/rapidstack/Docify.svg?branch=master'),
-        href='https://travis-ci.org/rapidstack/Docify')
-    + c.A(c.Img(alt='Documentation Status',
-                src='https://readthedocs.org/projects/docify/badge/?version=latest'),
-        href='https://docify.readthedocs.io/en/latest/?badge=latest'),
-    c.Br(),
-    c.Br(),
-    c.H2('Introduction'),
-    c.Span('Docify helps you write documents in different formats from a')
-    + c.Nbsp()
-    + c.Bold('Python object'),
-    c.Blockquote(
-        c.B('Note:')
+    c.Section(
+        c.H1('Docify')
+        + c.Span('Simple, flexible python document generator'),
+        c.A(c.Img(alt='PyPI version', src='https://img.shields.io/pypi/v/Docify.svg'),
+            href='https://pypi.org/project/Docify')
         + c.Nbsp()
-        + c.Span('It\'s not a document ')
-        + c.I('converter')
-        + c.Span(', neither a ')
-        + c.I('documentation')
-        + c.Span(' generator, nor a document ')
-        + c.I('parser')),
-    c.Br(),
-    c.H2('Installation'),
-    c.Pre(c.Code('pip install docify')),
-    c.Br(),
-    c.H2('Usage & Examples'),
-    c.P(
-        c.B(c.A('Read API documentation on Read the Docs',
-            href='https://docify.readthedocs.io')),
-        c.Br(),
-        c.B(c.A('Find quickstart and more examples here',
-            href='https://github.com/rapidstack/docify/tree/master/examples'))),
-    c.Br(),
-    c.B('Try examples like this'),
-    c.Pre(c.Code('python doc.py markdown\npython doc.py htmlbootstrap')))
+        + c.A(c.Img(
+            alt='Build Status',
+            src='https://travis-ci.org/rapidstack/Docify.svg?branch=master'),
+            href='https://travis-ci.org/rapidstack/Docify')
+        + c.Nbsp()
+        + c.A(c.Img(
+            alt='Documentation Status',
+            src='https://readthedocs.org/projects/docify/badge/?version=latest'),
+            href='https://docify.readthedocs.io/en/latest/?badge=latest')),
+
+    c.Section(
+        c.H2('Introduction')
+        + c.Span('Docify helps you write documents in different formats from a ')
+        + c.B('Python object.'),
+        c.Blockquote(
+            c.B('Note:')
+            + c.Nbsp()
+            + c.Span('It\'s not a document ')
+            + c.I('converter')
+            + c.Span(', neither a ')
+            + c.I('documentation')
+            + c.Span(' generator, nor a document ')
+            + c.I('parser'))),
+
+    c.Section(
+        c.H2('Installation')
+        + c.Pre(c.Code('pip install docify'))),
+    
+    c.Section(
+        c.H2('Usage & Examples')
+        + c.Span(
+            c.B(c.A('Read API documentation on Read the Docs',
+                href='https://docify.readthedocs.io')),
+            c.Br(),
+            c.B(c.A('Find quickstart and more examples here',
+                href='https://github.com/rapidstack/docify/tree/master/examples')))
+        + c.Br(),
+        c.B('Try examples like this'),
+        c.Pre(c.Code('python doc.py markdown\npython doc.py htmlbootstrap'))))
 
 
 if __name__ == '__main__':
