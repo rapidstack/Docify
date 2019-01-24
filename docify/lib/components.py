@@ -16,7 +16,7 @@ class Component(object):
             self.add(c)
 
     def __str__(self):
-        return '\n'.join(map(str, self.children))
+        return str(Br()).join(map(str, self.children))
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self)
@@ -61,7 +61,7 @@ class Section(Component):
     '''
 
     def __str__(self):
-        return '{}\n\n'.format('\n'.join(map(str, self.children)))
+        return '{}{}'.format(str(Br()).join(map(str, self.children)), str(Br()))
 
 
 class Span(Component):
@@ -270,7 +270,7 @@ class Break(Element):
     formats interpretes it differently. Use `Section` instead.
     '''
 
-    txt = '\n'
+    txt = '\n\n'
 
 
 class Anchor(Element):
