@@ -1,152 +1,162 @@
 from copy import deepcopy
 
 
-class Component(object):
-    '''An abstract class for any component. Do not use this class directly.
+class _Component(object):
+    '''An abstract class for any component. Do not use this class directly.'''
 
-    :param Component[] children: Single or collection of child components
-        to be wrapped by this component.
-    '''
-
-    def __init__(self, *children):
-        self.children = []
+    def __init__(self):
         self.parent = None
         self.depth = 0
-        for c in children:
-            self.add(c)
-
-    def __str__(self):
-        return str(Br()).join(map(str, self.children))
-
-    def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self)
-
-    def add(self, child):
-        '''Appends a component or an element as it's child.
-
-        :param Component child: The child object to be added.'''
-
-        if isinstance(child, Component):
-            child.setparent(self)
-        self.children.append(child)
-
-    def setdepth(self, depth):
-        '''Sets the depth of this component
-        and also updates depths of it's children.
-
-        :param int depth: depth to set.'''
-
-        self.depth = depth
-        for c in self.children:
-            isinstance(c, Component) and c.setdepth(depth+1)
+        self.prev = None
+        self.next = None
 
     def setparent(self, parent):
-        '''Sets the reference to it's parent object
-        and also updates it's depth based on parent's depth.
-
-        :param Component|Document parent: Object to set as parent.'''
-
+        '''Set the parent object.
+        
+        :param Component|Document parent: Parent to set.
+        '''
         self.parent = parent
-        self.setdepth(parent.depth + 1)
+
+    def setnext(self, nxt):
+        '''Add reference to previous and next element to support
+        doubly linked-list like iteration.
+        
+        :param Component nxt: Next component to link.
+        '''
+        self.next = nxt
+        nxt.prev = self
+    
+    def setdepth(self, depth):
+        '''Set depth of current component.
+        
+        :param int depth: depth to set.
+        '''
+        self.depth = depth
 
 
-class Section(Component):
-    '''Section. Similar to <section></section>
-    It joins all it's children with with new-line equivalent.
+class _Symbol(_Component):
+    '''An abstract class for all primitive symbols. Do not use it directly.'''
 
-    Example usage: ::
+    def __repr__(self):
+        return '{}()'.format(self.__class__.__name__)
 
-        s = Section('a', 'b', 'c')
-        # Result: <section>a<br />b<br />c</section>
+
+class Break(_Symbol):
+    '''Break. Similar to <br />'''
+
+
+class HorizontalRule(_Symbol):
+    '''HorizontalRule. Similar to <hr />'''
+
+
+class Text(_Component):
+    '''String objects are automatically wrapped into Text.
+    
+    :param str value: String object to wrap.
+
+    Example: ::
+
+        Document('Some text', 'Some more text')
+        # Becomes: Document(Text('Some text'), Text('Some more text'))
     '''
+    def __init__(self, value):
+        super(Text, self).__init__()
+        self.value = value
+    
+    def __repr__(self):
+        return '{}({})'.format(self.__class__.__name__, self.value)
 
-    def __str__(self):
-        return '{}{}'.format(str(Br()).join(map(str, self.children)), str(Br()))
 
-
-class Span(Component):
-    '''Similar to <span></span>.
-    It joins all it's children without any separator.
-    So when we do Element() + Element(), we get Span(Element(), Element()).
-    Supports ``+`` operator to return new `Span` with added child.
-
-    Example usage: ::
-
-        s = Span('im a span.', Nbsp(), 'Hail Docify!')
-        # Result: 'im a span. Hail Docify!'
-
-    Example addition: ::
-
-        Span('Hail') + Nbsp() + B('Docify') + I('!')
-        # Result: Span('Hail', Nbsp(), B('Docify'), I('!'))
-        # Result: 'Hail <b>Docify</b><i>!</i>'
+class Anchor(_Component):
+    '''Anchor. Similar to <a></a>.
+    
+    :param str href: URL link.
+    :param str value: Text to display.
     '''
-
-    def __str__(self):
-        return ''.join(map(str, self.children))
-
-    def __add__(self, element):
-        obj = deepcopy(self)
-        obj.add(element)
-        return obj
-
-    def add(self, child):
-        '''Appends a component or an element as it's child.
-
-        :param Component child: The child object to be added.'''
-
-        if isinstance(child, Component):
-            child.setparent(self)
-        self.children.append(child)
+    def __init__(self, href, value):
+        super(Anchor, self).__init__()
+        self.href = href
+        self.value = value
+    
+    def __repr__(self):
+        return '{}(href={}, value={})'.format(
+            self.__class__.__name__, self.href, self.value)
 
 
-class List(Component):
+class Image(_Component):
+    '''Image. Similar to <img />.
+
+    :param str src: Source of image.
+    :param str alt: Alternate text.
+    '''
+    def __init__(self, src, alt):
+        super(Image, self).__init__()
+        self.src = src
+        self.alt = alt
+    
+    def __repr__(self):
+        return '{}(src={}, alt={})'.format(
+            self.__class__.__name__, self.src, self.alt)
+
+
+class _Container(_Component):
+    '''Abstract for components with multiple child. Do not use it directly.
+    
+    :param list<Component> components: Components to add.
+    '''
+    def __init__(self, *components):
+        super(_Container, self).__init__()
+        self.components = []
+        for c in components:
+            self.add(c)
+    
+    def add(self, component):
+        '''Add a new component as child.
+        
+        :param Component component: Component to add.
+        '''
+        if isinstance(component, str):
+            component = Text(component)
+        component.setparent(self)
+        
+        if len(self.components) > 0:
+            self.components[-1].setnext(component)
+        
+        self.components.append(component)
+    
+    def setdepth(self, depth):
+        '''Set depth of current component.
+        
+        :param int depth: depth to set.
+        '''
+        self.depth = depth
+        for c in self.components:
+            c.setdepth(self.depth+1)
+
+    def __repr__(self):
+        return '{}(\n{}{})'.format(
+            self.__class__.__name__, ' ' * (self.depth + 1) * 4,
+            ('\n' + (' ' * (self.depth + 1) * 4)).join(map(str, self.components)))
+
+
+class Section(_Container):
+    '''Section. Similar to <section></section>'''
+    pass
+
+
+class Span(_Container):
+    '''Span. Similar to <span></span>.'''
+    pass
+
+
+class _List(_Container):
     '''Abstract class for ordered and unordered list.
     Do not use it directly.
-
-    :param Component[] children: `ListItem` or `List` to add as children.:
     '''
-
-    child_idx = '{index}.'
-
-    def __init__(self, *children):
-        self.level = 0
-        self.index = 0
-        super(List, self).__init__(*children)
-
-    def setlevel(self, level):
-        '''Sets relative depth from parent List
-        in case it's nested into another List. Also updates it's children.
-
-        :param int level: Level to set.
-        '''
-
-        self.level = level
-        for c in self.children:
-            isinstance(c, List) and c.setlevel(level+1)
-
-    def setindex(self, index):
-        '''Sets the index in case it's nested in another List.
-
-        :param int index: Index to set.
-        '''
-        self.index = index
-
-    def add(self, child):
-        '''Add a child to the list.
-
-        :param List|ListItem child: Adds a child object
-        '''
-
-        child.setparent(self)
-        child.setindex(self.child_idx.format(
-            index=(len(self.children) + 1)))
-        if isinstance(child, List):
-            child.setlevel(self.level + 1)
-        self.children.append(child)
+    pass
 
 
-class OrderedList(List):
+class OrderedList(_List):
     '''OrderedList. Similar to <ol></ol>.
 
     Example usage: ::
@@ -156,213 +166,83 @@ class OrderedList(List):
     pass
 
 
-class UnorderedList(List):
+class UnorderedList(_List):
     '''UnorderedList. Similar to <ul></ul>.
 
     Example usage: ::
         ul = Ul(Li('item 1'), Li('item 2'), Ul(Li('item 2.1')))
     '''
-
-    child_idx = '*'
-
-
-class Element(Component):
-    '''An abstract class for any single element. Do not use it directly.
-    Supports ``+`` operator to return new `Span` with added component.
-
-    :param Element element: Element to be wrapped.
-
-    Example addition: ::
-
-        I('Hail') + Nbsp() + B('Docify!')
-        # Result: Span(I('Hail'), Nbsp(), B('Docify!'))
-    '''
-
-    txt = '{element}'
-
-    def __init__(self, element=''):
-        super(Element, self).__init__(element)
-        self.element = self.children[0]
-
-    def __str__(self):
-        return self.txt.format(**self.__dict__)
-
-    def __repr__(self):
-        return '\n{}({})'.format(self.__class__.__name__, self)
-
-    def __add__(self, element):
-        span = Span(self)
-        span.setparent(self.parent)
-        span.add(element)
-        return span
+    pass
 
 
-class Header(Element):
+class _Header(Text):
     '''Header, Do not use it directly. It's supposed to be an abstract class'''
-
-    header_type = 1
-    txt = '# {element}\n'
+    pass
 
 
-class Header1(Header):
+class Header1(_Header):
     '''Header1. Similar to <h1></h1>'''
-
-    header_type = 1
-    txt = '{element}\n====================\n'
+    pass
 
 
-class Header2(Header):
+class Header2(_Header):
     '''Header2. Similar to <h2></h2>'''
-
-    header_type = 2
-    txt = '{element}\n--------------------\n'
+    pass
 
 
-class Header3(Header):
+class Header3(_Header):
     '''Header3. Similar to <h3></h3>'''
-
-    header_type = 3
-    txt = '### {element}\n'
+    pass
 
 
-class Header4(Header):
+class Header4(_Header):
     '''Header4. Similar to <h4></h4>'''
-
-    header_type = 4
-    txt = '#### {element}\n'
+    pass
 
 
-class Header5(Header):
+class Header5(_Header):
     '''Header5. Similar to <h5></h5>'''
-
-    header_type = 5
-    txt = '##### {element}\n'
+    pass
 
 
-class Header6(Header):
+class Header6(_Header):
     '''Header6. Similar to <h6></h6>'''
-
-    header_type = 6
-    txt = '###### {element}\n'
+    pass
 
 
-class Italic(Element):
+class Italic(_Container):
     '''Italic. Similar to <i></i>'''
+    pass
 
-    txt = '*{element}*'
 
-
-class Bold(Element):
+class Bold(_Container):
     '''Bold. Similar to <b></b>'''
-
-    txt = '**{element}**'
-
-
-class HorizontalRule(Element):
-    '''Horizontal Rule. Similar to <hr/>'''
-
-    txt = ('-' * 50) + '\n'
+    pass
 
 
-class Break(Element):
-    '''Break. Similar to <br />
-    Try to avoid using it as much as possible as different
-    formats interpretes it differently. Use `Section` instead.
-    '''
-
-    txt = '\n\n'
-
-
-class Anchor(Element):
-    '''Anchor. Similar to <a></a>
-
-    :param Element element: Element to be wrapped.
-    :param str href: Target URL.
-
-    Example usage: ::
-
-        a = A('Google', href='https://google.com')
-    '''
-
-    txt = '[{element}]({href})'
-
-    def __init__(self, element, href):
-        super(Anchor, self).__init__(element)
-        self.href = href
-
-
-class Image(Element):
-    '''Image. Similar to <img/>
-
-    :param str alt: Alternate text
-    :param str src: Source file
-
-    Example usage: ::
-
-        i = Img(src='https://img.shields.io/badge/docify-image_test-green.svg', alt='Image test')
-    '''
-
-    txt = '![{alt}]({src})'
-
-    def __init__(self, alt, src):
-        super(Image, self).__init__()
-        self.alt = alt
-        self.src = src
-
-
-class Pre(Element):
+class Pre(Text):
     '''Pre. Similar to <pre></pre>'''
+    pass
 
-    txt = '```\n{element}\n```\n'
 
-
-class Code(Element):
+class Code(Text):
     '''Code. Similar to <code></code>'''
-
-    def __str_(self):
-        if isinstance(self.parent, Pre):
-            return self.element
-        return '``{}``'.format(self.element)
+    pass
 
 
-class Blockquote(Element):
+class Blockquote(_Container):
     '''Blockquote. Similar to <blockquote></blockquote>'''
+    pass
 
-    txt = '> {element}\n'
 
-
-class Del(Element):
+class Del(Text):
     '''Del. Similar to <del></del>'''
-
-    txt = '~~{element}~~'
-
-
-class ListItem(Element):
-    '''ListItem. Similar to <li></li>
-
-    :param Element element: Element to be wrapped.
-    '''
-
-    def __init__(self, element=''):
-        super(ListItem, self).__init__(element)
-        self.index = '*'
-
-    def setindex(self, index):
-        '''Sets index.
-
-        :param int index: Index to set.
-        '''
-        self.index = index
-
-    def __str__(self):
-        return '{}{} {}'.format(
-            (' ' * self.parent.level * 3), self.index, self.element)
+    pass
 
 
-class NoBreakSpace(Element):
-    '''NoBreakSpace. Similar to &nbsp;'''
-
-    txt = ' '
+class ListItem(_Container):
+    '''ListItem. Similar to <li></li>'''
+    pass
 
 
 # Aliases
@@ -383,4 +263,3 @@ B = Bold
 Strong = Bold
 I = Italic
 Em = Italic
-Nbsp = NoBreakSpace
