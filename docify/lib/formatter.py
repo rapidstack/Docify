@@ -2,7 +2,6 @@ import re
 from copy import deepcopy
 
 from docify.lib.document import Document
-from docify.lib.components import Component, Element
 
 
 class Formatter(object):
@@ -11,28 +10,36 @@ class Formatter(object):
     :param Document document: Document to format.
     '''
 
-    @classmethod
-    def handlers(cls):
-        return {
-            str: lambda x: re.sub(r'((([_*]).+?\3[^_*]*)*)([_*])', '\g<1>\\\\\g<4>', x)
-        }
+    handlers = {}
 
     def __init__(self, document):
         self.doc = self.format(deepcopy(document))
 
     @classmethod
-    def format(cls, obj):
+    def handle(cls, item):
+        '''handle decorator. Register a handler for given item.
+        
+        Example usage: ::
+
+            @MyFormatter.handle(Document)
+            def handle_doc(state, doc):
+                return str(doc)
+        '''
+        return lambda func: cls.handlers.update({item: func})
+
+    def format(self, obj):
         '''Parse and format an object.
 
         :param Component|Document obj: Object to format.
         '''
+        otype = type(obj)
+        if otype not in self.handlers:
+            return str(obj)
+        return self.handlers[otype](self, obj)
 
-        return cls.handlers().get(type(obj), str)(obj)
+    def f(self, obj):
+        '''An alias to self.format'''
+        return self.format(obj)
 
-    @classmethod
-    def f(cls, obj):
-        '''An alias to format()'''
-        return cls.format(obj)
-
-    def __str__(self):
+    def __repr__(self):
         return self.doc
