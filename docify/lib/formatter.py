@@ -8,6 +8,7 @@ class Formatter(object):
     '''Abstract class for formatter. Do not use it directly.
 
     :param Document document: Document to format.
+    :param bool cite: Whether to add the grumpy citation. Default is True.
     '''
 
     handlers = {}
