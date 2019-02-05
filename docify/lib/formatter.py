@@ -1,7 +1,7 @@
 import re
 from copy import deepcopy
 
-from docify.lib.document import Document
+from docify import Document, components as c
 
 
 class Formatter(object):
@@ -12,8 +12,14 @@ class Formatter(object):
 
     handlers = {}
 
-    def __init__(self, document):
-        self.doc = self.format(deepcopy(document))
+    def __init__(self, document, cite=True):
+        raw_doc = deepcopy(document)
+        if cite:
+            raw_doc.add(c.Hr())
+            raw_doc.add(c.Footer(c.P(c.Small(c.Cite(
+                'This document was generated with ',
+                c.A('https://github.com/rapidstack/Docify', 'Docify'))))))
+        self.doc = self.format(raw_doc)
 
     @classmethod
     def handle(cls, *items):

@@ -26,17 +26,9 @@ class Document(object):
             self.add(c)
 
     def __repr__(self):
-        if self.cite:
-            doc = deepcopy(self)
-            doc.add(c.Footer(c.P(c.Small(c.Cite(
-                'This document was generated with ',
-                c.A('https://github.com/rapidstack/Docify', 'Docify'))))))
-        else:
-            doc = self
-
         return '{}(\n{}{})'.format(
             self.__class__.__name__, ' ' * (self.depth + 1) * 4,
-            ('\n' + (' ' * (self.depth + 1) * 4)).join(map(str, doc.components)))
+            ('\n' + (' ' * (self.depth + 1) * 4)).join(map(str, self.components)))
 
     def add(self, component):
         '''Adds a component in the doc.
