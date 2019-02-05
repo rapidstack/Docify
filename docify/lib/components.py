@@ -17,7 +17,6 @@ class _Component(object):
         Span('Some text') + Nbsp() + Span('Some other text')
         # Result: Span('Some text', Nbsp(), 'Some other text')
     '''
-
     def __init__(self):
         self.parent = None
         self.depth = 0
@@ -66,26 +65,6 @@ class _Component(object):
         return span
 
 
-class _Symbol(_Component):
-    '''An abstract class for all primitive symbols. Do not use it directly.'''
-
-    def __repr__(self):
-        return '{}()'.format(self.__class__.__name__)
-
-class NoBreakSpace(_Symbol):
-    '''NoBreakSpace. Similar to &nbsp;'''
-    pass
-
-class Break(_Symbol):
-    '''Break. Similar to <br />'''
-    pass
-
-
-class HorizontalRule(_Symbol):
-    '''HorizontalRule. Similar to <hr />'''
-    pass
-
-
 class Text(_Component):
     '''String objects are automatically wrapped into Text.
     So you don't need to use it directly.
@@ -106,21 +85,43 @@ class Text(_Component):
         return '{}({})'.format(self.__class__.__name__, self.value)
 
 
+class _Symbol(_Component):
+    '''An abstract class for all primitive symbols. Do not use it directly.'''
+
+    def __repr__(self):
+        return '{}()'.format(self.__class__.__name__)
+
+
+class NoBreakSpace(_Symbol):
+    '''NoBreakSpace. Similar to &nbsp;'''
+    pass
+
+
+class Break(_Symbol):
+    '''Break. Similar to <br />'''
+    pass
+
+
+class HorizontalRule(_Symbol):
+    '''HorizontalRule. Similar to <hr />'''
+    pass
+
+
 class Anchor(_Component):
     '''Anchor. Similar to <a></a>.
     
-    :param str href: URL link.
     :param str value: Text to display.
+    :param str href: URL link.
 
     Example usage: ::
 
-        a = Anchor('https://some.link.com', 'Some link')
+        a = Anchor('Some link', href='https://some.link.com')
     '''
 
-    def __init__(self, href, value):
+    def __init__(self, value, href):
         super(Anchor, self).__init__()
-        self.href = href
         self.value = value
+        self.href = href
 
     def __repr__(self):
         return '{}(href={}, value={})'.format(

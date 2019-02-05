@@ -16,16 +16,18 @@ class Formatter(object):
         self.doc = self.format(deepcopy(document))
 
     @classmethod
-    def handle(cls, item):
+    def handle(cls, *items):
         '''handle decorator. Register a handler for given item.
         
+        :param list items: List of items to handle.
+
         Example usage: ::
 
             @MyFormatter.handle(Document)
             def handle_doc(state, doc):
                 return str(doc)
         '''
-        return lambda func: cls.handlers.update({item: func})
+        return lambda func: [cls.handlers.update({i: func}) for i in items]
 
     def format(self, obj):
         '''Parse and format an object.
@@ -37,9 +39,9 @@ class Formatter(object):
             return str(obj)
         return self.handlers[otype](self, obj)
 
-    def f(self, obj):
-        '''An alias to self.format'''
-        return self.format(obj)
-
     def __repr__(self):
         return self.doc
+
+
+# Alias for format method
+Formatter.f = Formatter.format
