@@ -3,8 +3,9 @@ from copy import deepcopy
 
 class _Component(object):
     '''An abstract class for any component. Do not use this class directly.
-    
     Supports ``+`` operator to return a group of components wrapped inside Span.
+
+    :param dict properties: Extra properties for the component.
 
     Example addition: ::
 
@@ -17,7 +18,8 @@ class _Component(object):
         Span('Some text') + Nbsp() + Span('Some other text')
         # Result: Span('Some text', Nbsp(), 'Some other text')
     '''
-    def __init__(self):
+    def __init__(self, **properties):
+        self.props = properties
         self.parent = None
         self.depth = 0
         self.prev = None
@@ -118,14 +120,13 @@ class Anchor(_Component):
         a = Anchor('Some link', href='https://some.link.com')
     '''
 
-    def __init__(self, value, href):
-        super(Anchor, self).__init__()
+    def __init__(self, value, href, **kwargs):
+        super(Anchor, self).__init__(href=href, **kwargs)
         self.value = value
-        self.href = href
 
     def __repr__(self):
-        return '{}(href={}, value={})'.format(
-            self.__class__.__name__, self.href, self.value)
+        return '{}({}, href={})'.format(
+            self.__class__.__name__, self.value, self.props['href'])
 
 
 class Image(_Component):
@@ -139,14 +140,12 @@ class Image(_Component):
         img = Image(src='https://some.source.com/someimage.png', alt='Some text')
     '''
 
-    def __init__(self, src, alt):
-        super(Image, self).__init__()
-        self.src = src
-        self.alt = alt
+    def __init__(self, src, alt, **kwargs):
+        super(Image, self).__init__(src=src, alt=alt, **kwargs)
 
     def __repr__(self):
         return '{}(src={}, alt={})'.format(
-            self.__class__.__name__, self.src, self.alt)
+            self.__class__.__name__, self.props['src'], self.props['alt'])
 
 
 class _Container(_Component):
@@ -155,8 +154,8 @@ class _Container(_Component):
     :param list components: Components to add.
     '''
 
-    def __init__(self, *components):
-        super(_Container, self).__init__()
+    def __init__(self, *components, **kwargs):
+        super(_Container, self).__init__(**kwargs)
         self.components = []
         for c in components:
             self.add(c)

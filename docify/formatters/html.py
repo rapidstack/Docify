@@ -33,173 +33,151 @@ class HTML(Formatter):
         super(HTML, self).__init__(*args, **kwargs)
 
     def tag(self, tag, components=[], properties={}):
+        attrs = ''
+        if len(properties) > 0:
+            attrs += ' '
+            for k in properties:
+                v = properties[k]
+                attrs += '{}="{}"'.format(k, v.replace('"', '\\"'))
+        
+        if len(components) == 0:
+            return '<{0}{1} />'.format(tag, attrs)
+        
         return '<{0}{1}>{2}</{0}>'.format(
-            tag, ' ' + (' '.join(
-                '{}="{}"'.format(k, v.replace('"', '\\"'))
-                for k, v in properties.items()))
-                if len(properties) > 0 else '',
-            ''.join([self.f(c) for c in components]))
+            tag, attrs, ''.join([self.f(c) for c in components]))
 
 
-@HTML.handle(Document)
-def handle_doc(state, obj):
-    state._spacing
-    return state.tmpl.format(('\n' + (' ' * state._spacing)).join(
-        [state.f(c) for c in obj.components]))
+    def update_handlers(self):
+        '''Overriding parent method'''
 
+        super(HTML, self).update_handlers()
 
-@HTML.handle(c.Text)
-def handle_text(state, obj):
-    return cgi.escape(obj.value)
+        @self.handle(Document)
+        def handle_doc(self, obj):
+            self._spacing
+            return self.tmpl.format(('\n' + (' ' * self._spacing)).join(
+                [self.f(c) for c in obj.components]))
 
+        @self.handle(c.Text)
+        def handle_text(self, obj):
+            return cgi.escape(obj.value)
 
-@HTML.handle(c.Nbsp)
-def handle_nbsp(state, obj):
-    return '&nbsp;'
+        @self.handle(c.Nbsp)
+        def handle_nbsp(self, obj):
+            return '&nbsp;'
 
+        @self.handle(c.Break)
+        def handle_br(self, obj):
+            return '<br />'
 
-@HTML.handle(c.Break)
-def handle_br(state, obj):
-    return '<br />'
+        @self.handle(c.HorizontalRule)
+        def handle_hr(self, obj):
+            return '<hr />'
 
+        @self.handle(c.Anchor)
+        def handle_a(self, obj):
+            return self.tag('a', [obj.value], obj.props)
 
-@HTML.handle(c.HorizontalRule)
-def handle_hr(state, obj):
-    return '<hr />'
+        @self.handle(c.Image)
+        def handle_img(self, obj):
+            return self.tag('img', [], obj.props)
 
+        @self.handle(c.Header1)
+        def handle_h1(self, obj):
+            return self.tag('h1', obj.components, obj.props)
 
-@HTML.handle(c.Anchor)
-def handle_a(state, obj):
-    return '<a href="{}">{}</a>'.format(
-        obj.href.replace('"', '\\"'), state.f(obj.value))
+        @self.handle(c.Header2)
+        def handle_h2(self, obj):
+            return self.tag('h2', obj.components, obj.props)
 
+        @self.handle(c.Header3)
+        def handle_h3(self, obj):
+            return self.tag('h3', obj.components, obj.props)
 
-@HTML.handle(c.Image)
-def handle_img(state, obj):
-    return '<img src="{}" alt="{}" />'.format(
-        obj.src.replace('"', '\\"'), obj.alt.replace('"', '\\"'))
+        @self.handle(c.Header4)
+        def handle_h4(self, obj):
+            return self.tag('h4', obj.components, obj.props)
 
+        @self.handle(c.Header5)
+        def handle_h5(self, obj):
+            return self.tag('h5', obj.components, obj.props)
 
-@HTML.handle(c.Header1)
-def handle_h1(state, obj):
-    return state.tag('h1', obj.components)
+        @self.handle(c.Header6)
+        def handle_h6(self, obj):
+            return self.tag('h6', obj.components, obj.props)
 
+        @self.handle(c.Footer)
+        def handle_footer(self, obj):
+            return self.tag('footer', obj.components, obj.props)
 
-@HTML.handle(c.Header2)
-def handle_h2(state, obj):
-    return state.tag('h2', obj.components)
+        @self.handle(c.Small)
+        def handle_small(self, obj):
+            return self.tag('small', obj.components, obj.props)
 
+        @self.handle(c.Cite)
+        def handle_cite(self, obj):
+            return self.tag('cite', obj.components, obj.props)
 
-@HTML.handle(c.Header3)
-def handle_h3(state, obj):
-    return state.tag('h3', obj.components)
+        @self.handle(c.Italic)
+        def handle_i(self, obj):
+            return self.tag('i', obj.components, obj.props)
 
+        @self.handle(c.Bold)
+        def handle_b(self, obj):
+            return self.tag('b', obj.components, obj.props)
 
-@HTML.handle(c.Header4)
-def handle_h4(state, obj):
-    return state.tag('h4', obj.components)
+        @self.handle(c.Blockquote)
+        def handle_blockquote(self, obj):
+            return self.tag('blockquote', obj.components, obj.props)
 
+        @self.handle(c.Pre)
+        def handle_pre(self, obj):
+            return self.tag('pre', obj.components, obj.props)
 
-@HTML.handle(c.Header5)
-def handle_h5(state, obj):
-    return state.tag('h5', obj.components)
+        @self.handle(c.Code)
+        def handle_code(self, obj):
+            return self.tag('code', obj.components, obj.props)
 
+        @self.handle(c.Del)
+        def handle_del(self, obj):
+            return self.tag('del', obj.components, obj.props)
 
-@HTML.handle(c.Header6)
-def handle_h6(state, obj):
-    return state.tag('h6', obj.components)
-
-
-@HTML.handle(c.Footer)
-def handle_footer(state, obj):
-    return state.tag('footer', obj.components)
-
-
-@HTML.handle(c.Small)
-def handle_small(state, obj):
-    return state.tag('small', obj.components)
-
-
-@HTML.handle(c.Cite)
-def handle_cite(state, obj):
-    return state.tag('cite', obj.components)
-
-
-@HTML.handle(c.Italic)
-def handle_i(state, obj):
-    return state.tag('i', obj.components)
-
-
-@HTML.handle(c.Bold)
-def handle_b(state, obj):
-    return state.tag('b', obj.components)
-
-
-@HTML.handle(c.Blockquote)
-def handle_blockquote(state, obj):
-    return state.tag('blockquote', obj.components)
-
-
-@HTML.handle(c.Pre)
-def handle_pre(state, obj):
-    return state.tag('pre', obj.components)
-
-
-@HTML.handle(c.Code)
-def handle_code(state, obj):
-    return state.tag('code', obj.components)
-
-
-@HTML.handle(c.Del)
-def handle_del(state, obj):
-    return state.tag('del', obj.components)
-
-
-@HTML.handle(c.Section)
-def handle_section(state, obj):
-    return state.tag('section', obj.components)
-
-
-@HTML.handle(c.Paragraph)
-def handle_p(state, obj):
-    return state.tag('p', obj.components)
-
-
-@HTML.handle(c.Span)
-def handle_span(state, obj):
-    return state.tag('span', obj.components)
-
-
-@HTML.handle(c.OrderedList)
-def handle_ol(state, obj):
-    return state.tag('ol', obj.components)
-
-
-@HTML.handle(c.UnorderedList)
-def handle_ul(state, obj):
-    return state.tag('ul', obj.components)
-
-
-@HTML.handle(c.ListItem)
-def handle_li(state, obj):
-    return state.tag('li', obj.components)
-
-
-@HTML.handle(c.Table)
-def handle_table(state, obj):
-    return state.tag('table', obj.components)
-
-
-@HTML.handle(c.TableHeader)
-def handle_th(state, obj):
-    return state.tag('th', obj.components)
-
-
-@HTML.handle(c.TableRow)
-def handle_tr(state, obj):
-    return state.tag('tr', obj.components)
-
-
-@HTML.handle(c.TableData)
-def handle_td(state, obj):
-    return state.tag('td', obj.components)
+        @self.handle(c.Section)
+        def handle_section(self, obj):
+            return self.tag('section', obj.components, obj.props)
+
+        @self.handle(c.Paragraph)
+        def handle_p(self, obj):
+            return self.tag('p', obj.components, obj.props)
+
+        @self.handle(c.Span)
+        def handle_span(self, obj):
+            return self.tag('span', obj.components, obj.props)
+
+        @self.handle(c.OrderedList)
+        def handle_ol(self, obj):
+            return self.tag('ol', obj.components, obj.props)
+
+        @self.handle(c.UnorderedList)
+        def handle_ul(self, obj):
+            return self.tag('ul', obj.components, obj.props)
+
+        @self.handle(c.ListItem)
+        def handle_li(self, obj):
+            return self.tag('li', obj.components, obj.props)
+
+        @self.handle(c.Table)
+        def handle_table(self, obj):
+            return self.tag('table', obj.components, obj.props)
+
+        @self.handle(c.TableHeader)
+        def handle_th(self, obj):
+            return self.tag('th', obj.components, obj.props)
+
+        @self.handle(c.TableRow)
+        def handle_tr(self, obj):
+            return self.tag('tr', obj.components, obj.props)
+
+        @self.handle(c.TableData)
+        def handle_td(self, obj):
+            return self.tag('td', obj.components, obj.props)

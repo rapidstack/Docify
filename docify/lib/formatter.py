@@ -11,9 +11,8 @@ class Formatter(object):
     :param bool cite: Whether to add the grumpy citation. Default is True.
     '''
 
-    handlers = {}
-
     def __init__(self, document, cite=True):
+        self.handlers = {}
         raw_doc = deepcopy(document)
         if cite:
             raw_doc.add(c.Hr())
@@ -21,10 +20,10 @@ class Formatter(object):
                 'This document was generated with ',
                 c.A('Docify', 'https://github.com/rapidstack/Docify'),
                 '.')))))
+        self.update_handlers()
         self.doc = self.format(raw_doc)
 
-    @classmethod
-    def handle(cls, *items):
+    def handle(self, *items):
         '''handle decorator. Register a handler for given item.
         
         :param list items: List of items to handle.
@@ -35,7 +34,11 @@ class Formatter(object):
             def handle_doc(state, doc):
                 return str(doc)
         '''
-        return lambda func: [cls.handlers.update({i: func}) for i in items]
+        return lambda func: [self.handlers.update({i: func}) for i in items]
+    
+    def update_handlers(self):
+        '''Update handlers. Called before format.'''
+        pass
 
     def format(self, obj):
         '''Parse and format an object.

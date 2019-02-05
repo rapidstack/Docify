@@ -32,14 +32,18 @@ class HTMLBootstrap(HTML):
 
     tmpl = DOC_TMPL
 
+    def update_handlers(self):
+        '''Overwriting parent's method'''
 
-@HTMLBootstrap.handle(c.Pre)
-def handle_pre(state, obj):
-    return state.tag('pre', obj.components, {
-        'class': 'bg-light rounded'})
+        super(HTMLBootstrap, self).update_handlers()
+
+        @self.handle(c.Pre)
+        def handle_pre(self, obj):
+            return self.tag('pre', obj.components, {
+                'class': 'bg-light rounded'})
 
 
-@HTMLBootstrap.handle(c.Code)
-def handle_code(state, obj):
-    return state.tag('code', obj.components, {
-        'class': 'bg-light rounded'})
+        @self.handle(c.Code)
+        def handle_code(self, obj):
+            return self.tag('code', obj.components, {
+                'class': 'bg-light rounded'})

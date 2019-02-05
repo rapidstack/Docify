@@ -62,7 +62,8 @@ if __name__ == '__main__':
     formatters = {
         'html': HTML,
         'markdown': Markdown,
-        'htmlbootstrap': HTMLBootstrap
+        'htmlbootstrap': HTMLBootstrap,
+        'raw': str
     }
 
     if len(sys.argv) > 1:
