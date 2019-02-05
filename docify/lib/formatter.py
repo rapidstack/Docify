@@ -19,7 +19,8 @@ class Formatter(object):
             raw_doc.add(c.Hr())
             raw_doc.add(c.Footer(c.P(c.Small(c.Cite(
                 'This document was generated with ',
-                c.A('https://github.com/rapidstack/Docify', 'Docify'))))))
+                c.A('Docify', 'https://github.com/rapidstack/Docify'),
+                '.')))))
         self.doc = self.format(raw_doc)
 
     @classmethod
