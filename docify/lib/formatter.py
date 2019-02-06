@@ -14,8 +14,8 @@ class Formatter(object):
 
         class MyFormatter(Formatter):
             @self.handle(Span, Paragraph)
-            def handle_doc(self, doc):
-                return str(doc)
+            def handle_span_and_paragraph(self, obj):
+                return str(obj)
     '''
 
     def __init__(self, document, cite=True):
@@ -31,7 +31,7 @@ class Formatter(object):
         self.doc = self.format(raw_doc)
 
     def handle(self, *items):
-        '''handle decorator. Register a handler for given item.
+        '''Handle decorator. Register a handler for given items.
         
         :param list items: List of items to handle.
         '''
