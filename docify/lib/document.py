@@ -18,10 +18,9 @@ class Document(object):
         print(Whatever(doc))
     '''
 
-    def __init__(self, *components, cite=True):
+    def __init__(self, *components):
         self.components = []
         self.depth = 0
-        self.cite = cite
         for c in components:
             self.add(c)
 
