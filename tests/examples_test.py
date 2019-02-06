@@ -11,7 +11,8 @@ EXAMPLES = [
 FORMATS = {
     'markdown': 'result.md',
     'html': 'result.html',
-    'htmlbootstrap': 'result.withbootstrap.html'
+    'htmlbootstrap': 'result.withbootstrap.html',
+    'raw': 'result.raw.txt'
 }
 
 if __name__ == '__main__':

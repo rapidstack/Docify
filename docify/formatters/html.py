@@ -1,104 +1,182 @@
 import cgi
 
-from docify import Document, components as c
 from docify.lib.formatter import Formatter
+from docify import Document, components as c
 
 
 DOC_TMPL = '''\
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Docify Document</title>
-</head>
-<body>
-<div>
-{}
-<footer>
-<p>&nbsp;</p>
-<small>
-<cite>
-This document generated using
-<a href="https://github.com/rapidstack/docify">Docify</a>
-</cite>
-</small>
-</footer>
-</div>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Docify Document</title>
+    </head>
+    <body>
+        <div id="container">
+            {}
+        </div>
+    </body>
 </html>
 '''
 
 
 class HTML(Formatter):
-    '''HTML fomatter to format `Document`'''
+    '''HTML formatter to format document into plain HTML.'''
 
-    @classmethod
-    def handlers(cls):
-        '''Get the component handlers'''
+    tmpl = DOC_TMPL
+    indent = 4
+    initial_spacing = 12
 
-        return {
-            str: cgi.escape,
+    def __init__(self, *args, **kwargs):
+        self._spacing = self.initial_spacing
+        super(HTML, self).__init__(*args, **kwargs)
 
-            Document: lambda x: DOC_TMPL.format(
-                '\n'.join(map(cls.f, x.components))),
+    def tag(self, tag, components=[], properties={}):
+        attrs = ''
+        if len(properties) > 0:
+            attrs += ' '
+            for k in properties:
+                v = properties[k]
+                attrs += '{}="{}"'.format(k, v.replace('"', '\\"'))
 
-            c.Nbsp: lambda x: '&nbsp;',
+        if len(components) == 0:
+            return '<{0}{1} />'.format(tag, attrs)
 
-            c.Li: lambda x: '<li>{}</li>'.format(cls.f(x.element)),
+        return '<{0}{1}>{2}</{0}>'.format(
+            tag, attrs, ''.join([self.f(c) for c in components]))
 
-            c.A: lambda x: '<a href="{}">{}</a>'.format(
-                x.href.replace('"', '\\"'), cls.f(x.element)),
+    def update_handlers(self):
+        '''Overriding parent method'''
 
-            c.Section: lambda x: '<section>\n{}\n</section><br />'.format(
-                '<br />'.join(map(cls.f, x.children))),
+        super(HTML, self).update_handlers()
 
-            c.Ol: lambda x: '<ol>\n{}\n</ol>'.format(
-                '\n'.join(map(cls.f, x.children))),
+        @self.handle(Document)
+        def handle_doc(self, obj):
+            self._spacing
+            return self.tmpl.format(('\n' + (' ' * self._spacing)).join(
+                [self.f(c) for c in obj.components]))
 
-            c.Ul: lambda x: '<ul>\n{}\n</ul>'.format(
-                '\n'.join(map(cls.f, x.children))),
+        @self.handle(c.Text)
+        def handle_text(self, obj):
+            return cgi.escape(obj.value)
 
-            c.H1: lambda x: '<h1>{}</h1>'.format(cls.f(x.element)),
+        @self.handle(c.Nbsp)
+        def handle_nbsp(self, obj):
+            return '&nbsp;'
 
-            c.H2: lambda x: '<h2>{}</h2>'.format(cls.f(x.element)),
+        @self.handle(c.Break)
+        def handle_br(self, obj):
+            return '<br />'
 
-            c.H3: lambda x: '<h3>{}</h3>'.format(cls.f(x.element)),
+        @self.handle(c.HorizontalRule)
+        def handle_hr(self, obj):
+            return '<hr />'
 
-            c.H4: lambda x: '<h4>{}</h4>'.format(cls.f(x.element)),
+        @self.handle(c.Anchor)
+        def handle_a(self, obj):
+            return self.tag('a', [obj.value], obj.props)
 
-            c.H5: lambda x: '<h5>{}</h5>'.format(cls.f(x.element)),
+        @self.handle(c.Image)
+        def handle_img(self, obj):
+            return self.tag('img', [], obj.props)
 
-            c.H6: lambda x: '<h6>{}</h6>'.format(cls.f(x.element)),
+        @self.handle(c.Header1)
+        def handle_h1(self, obj):
+            return self.tag('h1', obj.components, obj.props)
 
-            c.I: lambda x: '<i>{}</i>'.format(cls.f(x.element)),
+        @self.handle(c.Header2)
+        def handle_h2(self, obj):
+            return self.tag('h2', obj.components, obj.props)
 
-            c.B: lambda x: '<b>{}</b>'.format(cls.f(x.element)),
+        @self.handle(c.Header3)
+        def handle_h3(self, obj):
+            return self.tag('h3', obj.components, obj.props)
 
-            c.Hr: lambda x: '<hr />',
+        @self.handle(c.Header4)
+        def handle_h4(self, obj):
+            return self.tag('h4', obj.components, obj.props)
 
-            c.Br: lambda x: '<br />',
+        @self.handle(c.Header5)
+        def handle_h5(self, obj):
+            return self.tag('h5', obj.components, obj.props)
 
-            c.Code: lambda x: '<code>{}</code>'.format(cls.f(x.element)),
+        @self.handle(c.Header6)
+        def handle_h6(self, obj):
+            return self.tag('h6', obj.components, obj.props)
 
-            c.Pre: lambda x: '<pre>{}</pre>'.format(cls.f(x.element)),
+        @self.handle(c.Footer)
+        def handle_footer(self, obj):
+            return self.tag('footer', obj.components, obj.props)
 
-            c.Blockquote: lambda x: '<blockquote>{}</blockquote>'.format(
-                cls.f(x.element)),
+        @self.handle(c.Small)
+        def handle_small(self, obj):
+            return self.tag('small', obj.components, obj.props)
 
-            c.Del: lambda x: '<del>{}</del>'.format(cls.f(x.element)),
+        @self.handle(c.Cite)
+        def handle_cite(self, obj):
+            return self.tag('cite', obj.components, obj.props)
 
-            c.Span: lambda x: '<span>{}</span>'.format(
-                ''.join(map(cls.f, x.children))),
+        @self.handle(c.Italic)
+        def handle_i(self, obj):
+            return self.tag('i', obj.components, obj.props)
 
-            c.Img: lambda x: '<img src="{}" alt="{}" />'.format(
-                x.src.replace('"', '\\"'), x.alt.replace('"', '\\"'))
-        }
+        @self.handle(c.Bold)
+        def handle_b(self, obj):
+            return self.tag('b', obj.components, obj.props)
 
-    @staticmethod
-    def i(depth):
-        '''Create indentation based on depth.
+        @self.handle(c.Blockquote)
+        def handle_blockquote(self, obj):
+            return self.tag('blockquote', obj.components, obj.props)
 
-        :param int depth: Depth of object.
-        '''
-        return ' ' * (8 + (depth * 4))
+        @self.handle(c.Pre)
+        def handle_pre(self, obj):
+            return self.tag('pre', obj.components, obj.props)
+
+        @self.handle(c.Code)
+        def handle_code(self, obj):
+            return self.tag('code', obj.components, obj.props)
+
+        @self.handle(c.Del)
+        def handle_del(self, obj):
+            return self.tag('del', obj.components, obj.props)
+
+        @self.handle(c.Section)
+        def handle_section(self, obj):
+            return self.tag('section', obj.components, obj.props)
+
+        @self.handle(c.Paragraph)
+        def handle_p(self, obj):
+            return self.tag('p', obj.components, obj.props)
+
+        @self.handle(c.Span)
+        def handle_span(self, obj):
+            return self.tag('span', obj.components, obj.props)
+
+        @self.handle(c.OrderedList)
+        def handle_ol(self, obj):
+            return self.tag('ol', obj.components, obj.props)
+
+        @self.handle(c.UnorderedList)
+        def handle_ul(self, obj):
+            return self.tag('ul', obj.components, obj.props)
+
+        @self.handle(c.ListItem)
+        def handle_li(self, obj):
+            return self.tag('li', obj.components, obj.props)
+
+        @self.handle(c.Table)
+        def handle_table(self, obj):
+            return self.tag('table', obj.components, obj.props)
+
+        @self.handle(c.TableHeader)
+        def handle_th(self, obj):
+            return self.tag('th', obj.components, obj.props)
+
+        @self.handle(c.TableRow)
+        def handle_tr(self, obj):
+            return self.tag('tr', obj.components, obj.props)
+
+        @self.handle(c.TableData)
+        def handle_td(self, obj):
+            return self.tag('td', obj.components, obj.props)
