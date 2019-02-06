@@ -24,12 +24,11 @@ DOC_TMPL = '''\
 class HTML(Formatter):
     '''HTML formatter to format document into plain HTML.'''
 
-    tmpl = DOC_TMPL
-    indent = 4
-    initial_spacing = 12
-
     def __init__(self, *args, **kwargs):
-        self._spacing = self.initial_spacing
+        self.tmpl = DOC_TMPL
+        self.indent = 4
+        self._spacing = 4
+        self.initial_spacing = 12
         super(HTML, self).__init__(*args, **kwargs)
 
     def tag(self, tag, components=[], properties={}):

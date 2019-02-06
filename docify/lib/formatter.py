@@ -9,6 +9,13 @@ class Formatter(object):
 
     :param Document document: Document to format.
     :param bool cite: Whether to add the grumpy citation. Default is True.
+
+    Example usage: ::
+
+        class MyFormatter(Formatter):
+            @self.handle(Span, Paragraph)
+            def handle_doc(self, doc):
+                return str(doc)
     '''
 
     def __init__(self, document, cite=True):
@@ -27,21 +34,16 @@ class Formatter(object):
         '''handle decorator. Register a handler for given item.
         
         :param list items: List of items to handle.
-
-        Example usage: ::
-
-            @MyFormatter.handle(Document)
-            def handle_doc(state, doc):
-                return str(doc)
         '''
         return lambda func: [self.handlers.update({i: func}) for i in items]
     
     def update_handlers(self):
-        '''Update handlers. Called before format.'''
+        '''Update handlers. Called by __init__ before performing format operation.'''
         pass
 
     def format(self, obj):
-        '''Parse and format an object.
+        '''Parse and format an object using appropriate handler.
+        If handler is not found, it will use `str`.
 
         :param Component|Document obj: Object to format.
         '''

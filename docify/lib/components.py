@@ -118,7 +118,7 @@ class Anchor(_Component):
 
     Example usage: ::
 
-        a = Anchor('Some link', href='https://some.link.com')
+        Anchor('Some link', href='https://some.link.com')
     '''
 
     def __init__(self, value, href, **kwargs):
@@ -138,7 +138,7 @@ class Image(_Component):
 
     Example usage: ::
 
-        img = Image(src='https://some.source.com/someimage.png', alt='Some text')
+        Image(src='https://some.source.com/someimage.png', alt='Some text')
     '''
 
     def __init__(self, src, alt, **kwargs):
@@ -273,7 +273,7 @@ class Section(_Container):
     
     Example usage: ::
 
-        s = Section(I('Some text'), B('Some other text'))
+        Section(I('Some text'), B('Some other text'))
     '''
     pass
 
@@ -283,7 +283,7 @@ class Paragraph(_Container):
     
     Example usage: ::
 
-        p = P(I('Some text'), Nbsp(), B('Some other text'))
+        P(I('Some text'), Nbsp(), B('Some other text'))
     '''
     pass
 
@@ -293,7 +293,7 @@ class Span(_Container):
     
     Example usage: ::
 
-        s = Span('Some text', 'Some other text')
+        Span('Some text', 'Some other text')
     '''
     pass
 
@@ -310,7 +310,7 @@ class OrderedList(_List):
 
     Example usage: ::
 
-        ol = Ol(Li('item 1'), Li('item 2'), Ol(Li('item 2.1')))
+        Ol(Li('item 1'), Li('item 2'), Ol(Li('item 2.1')))
     '''
     pass
 
@@ -320,7 +320,7 @@ class UnorderedList(_List):
 
     Example usage: ::
 
-        ul = Ul(Li('item 1'), Li('item 2'), Ul(Li('item 2.1')))
+        Ul(Li('item 1'), Li('item 2'), Ul(Li('item 2.1')))
     '''
     pass
 
@@ -337,7 +337,7 @@ class Table(_Container):
     
     Example usage: ::
 
-        t = Table(
+        Table(
             Tr(Th('header 1'), Th('header 2')),
             Tr(Td('value 1'), Td('value 2')))
     '''
