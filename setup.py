@@ -18,7 +18,6 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/rapidstack/docify',
-    download_url='https://github.com/rapidstack/docify/archive/%s.tar.gz' % VERSION,
     author='Arijit Basu',
     author_email='sayanarijit@gmail.com',
     license='MIT',
