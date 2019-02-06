@@ -25,11 +25,11 @@ class HTML(Formatter):
     '''HTML formatter to format document into plain HTML.'''
 
     def __init__(self, *args, **kwargs):
+        super(HTML, self).__init__(*args, **kwargs)
         self.tmpl = DOC_TMPL
         self.indent = 4
         self._spacing = 4
         self.initial_spacing = 12
-        super(HTML, self).__init__(*args, **kwargs)
 
     def tag(self, tag, components=[], properties={}):
         attrs = ''

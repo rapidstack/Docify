@@ -8,17 +8,17 @@ class Markdown(Formatter):
     '''Markdown formatter to format document into plain markdown.'''
 
     def __init__(self, *args, **kwargs):
+        super(Markdown, self).__init__(*args, **kwargs)
         self.newline_types = set([
             c.Blockquote, c.Break, c.Footer, c.Header1,
             c.Header2, c.Header3, c.Header4, c.Header5,
             c.Header6, c.HorizontalRule, c.OrderedList, c.ListItem,
             c.Paragraph, c.Pre, c.Section, c.Table, c.UnorderedList
         ])
-        super(Markdown, self).__init__(*args, **kwargs)
 
     def r(self, txt, component):
         '''Helps rendering a formatted string with required line gaps.
-        
+
         :param str txt: Formatted string.
         :param Component component: Component to render.
         '''

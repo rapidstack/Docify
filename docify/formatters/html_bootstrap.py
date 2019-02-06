@@ -31,8 +31,8 @@ class HTMLBootstrap(HTML):
     '''HTMLBootstrap formatter to format into fancy static web page.'''
 
     def __init__(self, *args, **kwargs):
-        self.tmpl = DOC_TMPL
         super(HTMLBootstrap, self).__init__(*args, **kwargs)
+        self.tmpl = DOC_TMPL
 
     def update_handlers(self):
         '''Overwriting parent's method'''

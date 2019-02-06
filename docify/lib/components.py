@@ -29,7 +29,7 @@ class _Component(object):
     def setparent(self, parent):
         '''Set the parent object.
         Also updates it's depth based on parent's depth.
-        
+
         :param Component|Document parent: Parent to set.
         '''
         self.parent = parent
@@ -38,7 +38,7 @@ class _Component(object):
     def setnext(self, nxt):
         '''Add reference to previous and next element to support
         doubly linked-list like iteration.
-        
+
         :param Component nxt: Next component to link.
         '''
         self.next = nxt
@@ -46,7 +46,7 @@ class _Component(object):
 
     def setdepth(self, depth):
         '''Set depth of current component.
-        
+
         :param int depth: depth to set.
         '''
         self.depth = depth
@@ -71,7 +71,7 @@ class _Component(object):
 class Text(_Component):
     '''String objects are automatically wrapped into Text.
     So you don't need to use it directly.
-    
+
     :param str value: String object to wrap.
 
     Example: ::
@@ -112,7 +112,7 @@ class HorizontalRule(_Symbol):
 
 class Anchor(_Component):
     '''Anchor. Similar to <a></a>.
-    
+
     :param str value: Text to display.
     :param str href: URL link.
 
@@ -151,7 +151,7 @@ class Image(_Component):
 
 class _Container(_Component):
     '''Abstract for components with multiple child. Do not use it directly.
-    
+
     :param list components: Components to add.
     '''
 
@@ -163,7 +163,7 @@ class _Container(_Component):
 
     def add(self, component):
         '''Add a new component as child.
-        
+
         :param Component component: Component to add.
         '''
         if not isinstance(component, _Component):
@@ -270,7 +270,7 @@ class Del(_Container):
 
 class Section(_Container):
     '''Section. Similar to <section></section>.
-    
+
     Example usage: ::
 
         Section(I('Some text'), B('Some other text'))
@@ -280,7 +280,7 @@ class Section(_Container):
 
 class Paragraph(_Container):
     '''Paragraph. Similar to <p></p>.
-    
+
     Example usage: ::
 
         P(I('Some text'), Nbsp(), B('Some other text'))
@@ -290,7 +290,7 @@ class Paragraph(_Container):
 
 class Span(_Container):
     '''Span. Similar to <span></span>.
-    
+
     Example usage: ::
 
         Span('Some text', 'Some other text')
@@ -334,7 +334,7 @@ class ListItem(_Container):
 
 class Table(_Container):
     '''Table. Similar to <table></table>.
-    
+
     Example usage: ::
 
         Table(

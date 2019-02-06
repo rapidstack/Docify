@@ -1,7 +1,6 @@
-import re
 from copy import deepcopy
 
-from docify import Document, components as c
+from docify import components as c
 
 
 class Formatter(object):
@@ -20,25 +19,25 @@ class Formatter(object):
 
     def __init__(self, document, cite=True):
         self.handlers = {}
-        raw_doc = deepcopy(document)
+        self.doc = deepcopy(document)
         if cite:
-            raw_doc.add(c.Hr())
-            raw_doc.add(c.Footer(c.P(c.Small(c.Cite(
+            self.doc.add(c.Hr())
+            self.doc.add(c.Footer(c.P(c.Small(c.Cite(
                 'This document was generated with ',
                 c.A('Docify', 'https://github.com/rapidstack/Docify'),
                 '.')))))
-        self.update_handlers()
-        self.doc = self.format(raw_doc)
 
     def handle(self, *items):
         '''Handle decorator. Register a handler for given items.
-        
+
         :param list items: List of items to handle.
         '''
         return lambda func: [self.handlers.update({i: func}) for i in items]
-    
+
     def update_handlers(self):
-        '''Update handlers. Called by __init__ before performing format operation.'''
+        '''Update handlers. Called by render() before
+        performing format operation.
+        '''
         pass
 
     def format(self, obj):
@@ -52,8 +51,13 @@ class Formatter(object):
             return str(obj)
         return self.handlers[otype](self, obj)
 
+    def render(self):
+        self.update_handlers()
+        '''Renders the formatted document. Called by __repr__.'''
+        return self.format(self.doc)
+
     def __repr__(self):
-        return self.doc
+        return self.render()
 
 
 # Alias for format method
