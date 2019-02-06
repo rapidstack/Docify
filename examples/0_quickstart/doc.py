@@ -13,21 +13,15 @@ doc = Document(
     c.H4('Header 4'),
     c.H5('Header 5'),
     c.H6('Header 6'),
-
-    c.Section(
-        c.I('Italic'),
-        c.B('Bold'),
-        c.B(c.I('Italic') + c.Nbsp() + 'inside bold'),
-        c.I(c.B('Bold') + ' inside italic'),
-        c.Blockquote('Blockquote'),
-        c.Del('Strikethrough')),
-
+    c.P(c.I('Italic')),
+    c.P(c.B('Bold')),
+    c.P(c.B(c.I('Italic') + c.Nbsp() + 'inside bold')),
+    c.P(c.I(c.B('Bold'), ' inside italic')),
+    c.Blockquote('Blockquote'),
+    c.P(c.Del('Strikethrough')),
     c.Pre(c.Code('# Code block\n:(){ :|:& };:')),
-
-    c.Section(
-        c.Span('Inline code:', c.Code(':(){ :|:& };:')),
-        c.Span('Span', '->', c.Span('Nested span'))),
-
+    c.P(c.Span('Inline code: ', c.Code(':(){ :|:& };:'))),
+    c.P(c.Span('Span', ' -> ', c.Span('Nested span'))),
     c.Ol(
         c.Li('Item 1'),
         c.Li(c.A('Item 2', href='#')),
@@ -37,26 +31,20 @@ doc = Document(
             c.Ol(
                 c.Li('Item 2.2.1'),
                 c.Li(c.A('Item 2.2.2', href='#'))))),
-
-    c.Br(),
-
-    c.Img(
+    c.Table(
+        c.Tr(c.Th('Field'), c.Th('Value')),
+        c.Tr(c.Td('x'), c.Td(100)),
+        c.Tr(c.Td('y'), c.Td(200))),
+    c.P(c.Img(
         src='https://img.shields.io/badge/docify-image_test-green.svg',
-        alt='Image Test'),
-
-    c.Br(),
-
+        alt='Image Test')),
     c.Hr(),
-
     c.A('google', href='https://google.com'),
-
     c.Br(),
-
     c.A(c.Img(
         src='https://img.shields.io/badge/docify-image_test-green.svg',
         alt='Image Test'),
         href='https://img.shields.io/badge/docify-image_test-green.svg'))
-
 
 if __name__ == '__main__':
     formatters = {

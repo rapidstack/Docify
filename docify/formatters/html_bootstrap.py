@@ -42,7 +42,6 @@ class HTMLBootstrap(HTML):
             return self.tag('pre', obj.components, {
                 'class': 'bg-light rounded'})
 
-
         @self.handle(c.Code)
         def handle_code(self, obj):
             return self.tag('code', obj.components, {

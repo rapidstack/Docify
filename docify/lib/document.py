@@ -35,7 +35,7 @@ class Document(object):
 
         :param Component component: Component to be added
         '''
-        if isinstance(component, str):
+        if not isinstance(component, c._Component):
             component = c.Span(component)
         component.setparent(self)
 

@@ -39,13 +39,12 @@ class HTML(Formatter):
             for k in properties:
                 v = properties[k]
                 attrs += '{}="{}"'.format(k, v.replace('"', '\\"'))
-        
+
         if len(components) == 0:
             return '<{0}{1} />'.format(tag, attrs)
-        
+
         return '<{0}{1}>{2}</{0}>'.format(
             tag, attrs, ''.join([self.f(c) for c in components]))
-
 
     def update_handlers(self):
         '''Overriding parent method'''

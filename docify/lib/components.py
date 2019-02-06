@@ -18,6 +18,7 @@ class _Component(object):
         Span('Some text') + Nbsp() + Span('Some other text')
         # Result: Span('Some text', Nbsp(), 'Some other text')
     '''
+
     def __init__(self, **properties):
         self.props = properties
         self.parent = None
@@ -81,7 +82,7 @@ class Text(_Component):
 
     def __init__(self, value):
         super(Text, self).__init__()
-        self.value = value
+        self.value = str(value)
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__, self.value)
@@ -165,7 +166,7 @@ class _Container(_Component):
         
         :param Component component: Component to add.
         '''
-        if isinstance(component, str):
+        if not isinstance(component, _Component):
             component = Text(component)
         component.setparent(self)
 
