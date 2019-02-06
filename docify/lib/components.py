@@ -224,7 +224,7 @@ class Header6(_Header):
 
 
 class Footer(_Container):
-    '''Footer. Similar to <footer></>'''
+    '''Footer. Similar to <footer></footer>'''
     pass
 
 
