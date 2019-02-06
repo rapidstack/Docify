@@ -10,7 +10,7 @@ class Markdown(Formatter):
     def __init__(self, *args, **kwargs):
         self.newline_types = set([
             c.Blockquote, c.Break, c.Footer, c.Header1,
-            c.Header2, c.Header3, c.Header4, c.Header5, c.TableRow,
+            c.Header2, c.Header3, c.Header4, c.Header5,
             c.Header6, c.HorizontalRule, c.OrderedList, c.ListItem,
             c.Paragraph, c.Pre, c.Section, c.Table, c.UnorderedList
         ])
@@ -185,7 +185,8 @@ class Markdown(Formatter):
         @self.handle(c.TableRow)
         def handle_tr(self, obj):
             txt = ' | '.join(map(self.f, obj.components))
-            l = '=' if obj.prev is None else '-'
             txt += '\n'
-            txt += ' | '.join(['----------'] * len(obj.components))
+            if obj.prev is None:
+                txt += ' | '.join(['-' * 10] * len(obj.components))
+                txt += '\n'
             return self.r(txt, obj)

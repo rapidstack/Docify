@@ -53,13 +53,8 @@ Span -> Nested span
 
 **Field** | **Value**
 ---------- | ----------
-
 x | 100
----------- | ----------
-
 y | 200
----------- | ----------
-
 
 
 ![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)
