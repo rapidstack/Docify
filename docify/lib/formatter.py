@@ -52,8 +52,8 @@ class Formatter(object):
         return self.handlers[otype](self, obj)
 
     def render(self):
-        self.update_handlers()
         '''Renders the formatted document. Called by __repr__.'''
+        self.update_handlers()
         return self.format(self.doc)
 
     def __repr__(self):
