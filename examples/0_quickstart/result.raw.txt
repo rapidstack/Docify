@@ -1,85 +1,84 @@
 Document(
     Header1(
-        Text(Header 1))
+        Text('Header 1'))
     Header2(
-        Text(Header 2))
+        Text('Header 2'))
     Header3(
-        Text(Header 3))
+        Text('Header 3'))
     Header4(
-        Text(Header 4))
+        Text('Header 4'))
     Header5(
-        Text(Header 5))
+        Text('Header 5'))
     Header6(
-        Text(Header 6))
+        Text('Header 6'))
     Paragraph(
         Italic(
-            Text(Italic)))
+            Text('Italic')))
     Paragraph(
         Bold(
-            Text(Bold)))
+            Text('Bold')))
     Paragraph(
         Bold(
             Span(
                 Italic(
-                    Text(Italic))
+                    Text('Italic'))
                 NoBreakSpace()
-                Text(inside bold))))
+                Text('inside bold'))))
     Paragraph(
         Italic(
             Bold(
-                Text(Bold))
-            Text( inside italic)))
+                Text('Bold'))
+            Text(' inside italic')))
     Blockquote(
-        Text(Blockquote))
+        Text('Blockquote'))
     Paragraph(
         Del(
-            Text(Strikethrough)))
+            Text('Strikethrough')))
     Pre(
         Code(
-            Text(# Code block
-:(){ :|:& };:)))
+            Text('# Code block\n:(){ :|:& };:')))
     Paragraph(
         Span(
-            Text(Inline code: )
+            Text('Inline code: ')
             Code(
-                Text(:(){ :|:& };:))))
+                Text(':(){ :|:& };:'))))
     Paragraph(
         Span(
-            Text(Span)
-            Text( -> )
+            Text('Span')
+            Text(' -> ')
             Span(
-                Text(Nested span))))
+                Text('Nested span'))))
     OrderedList(
         ListItem(
-            Text(Item 1))
+            Text('Item 1'))
         ListItem(
             Anchor(Item 2, href=#))
         UnorderedList(
             ListItem(
-                Text(Item 2.1))
+                Text('Item 2.1'))
             ListItem(
                 Anchor(Item 2.2, href=#))
             OrderedList(
                 ListItem(
-                    Text(Item 2.2.1))
+                    Text('Item 2.2.1'))
                 ListItem(
                     Anchor(Item 2.2.2, href=#)))))
     Table(
         TableRow(
             TableHeader(
-                Text(Field))
+                Text('Field'))
             TableHeader(
-                Text(Value)))
+                Text('Value')))
         TableRow(
             TableData(
-                Text(x))
+                Text('x'))
             TableData(
-                Text(100)))
+                Text('100')))
         TableRow(
             TableData(
-                Text(y))
+                Text('y'))
             TableData(
-                Text(200))))
+                Text('200'))))
     Paragraph(
         Image(src=https://img.shields.io/badge/docify-image_test-green.svg, alt=Image Test))
     HorizontalRule()
