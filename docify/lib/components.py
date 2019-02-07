@@ -127,7 +127,8 @@ class Anchor(_Component):
 
     def __repr__(self):
         return '{}({}, href={})'.format(
-            self.__class__.__name__, self.value, self.props['href'])
+            self.__class__.__name__, self.value.__repr__(),
+            self.props['href'].__repr__())
 
 
 class Image(_Component):
@@ -146,7 +147,8 @@ class Image(_Component):
 
     def __repr__(self):
         return '{}(src={}, alt={})'.format(
-            self.__class__.__name__, self.props['src'], self.props['alt'])
+            self.__class__.__name__, self.props['src'].__repr__(),
+            self.props['alt'].__repr__())
 
 
 class _Container(_Component):
