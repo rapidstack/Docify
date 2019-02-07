@@ -85,7 +85,7 @@ class Text(_Component):
         self.value = str(value)
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__, self.value)
+        return '{}({})'.format(self.__class__.__name__, self.value.__repr__())
 
 
 class _Symbol(_Component):
