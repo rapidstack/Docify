@@ -156,7 +156,7 @@ class Image(_Leaf):
             self.props['alt'].__repr__())
 
 
-class _Composite(_Leaf):
+class _Composite(_Component):
     '''Abstract for components with multiple child. Do not use it directly.
 
     :param list components: Components to add.
