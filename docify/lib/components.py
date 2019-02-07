@@ -68,7 +68,12 @@ class _Component(object):
         return span
 
 
-class Text(_Component):
+class _Leaf(_Component):
+    '''An abstract class for leaf components'''
+    pass
+
+
+class Text(_Leaf):
     '''String objects are automatically wrapped into Text.
     So you don't need to use it directly.
 
@@ -88,7 +93,7 @@ class Text(_Component):
         return '{}({})'.format(self.__class__.__name__, self.value.__repr__())
 
 
-class _Symbol(_Component):
+class _Symbol(_Leaf):
     '''An abstract class for all primitive symbols. Do not use it directly.'''
 
     def __repr__(self):
@@ -110,7 +115,7 @@ class HorizontalRule(_Symbol):
     pass
 
 
-class Anchor(_Component):
+class Anchor(_Leaf):
     '''Anchor. Similar to <a></a>.
 
     :param str value: Text to display.
@@ -131,7 +136,7 @@ class Anchor(_Component):
             self.props['href'].__repr__())
 
 
-class Image(_Component):
+class Image(_Leaf):
     '''Image. Similar to <img />.
 
     :param str src: Source of image.
@@ -151,14 +156,14 @@ class Image(_Component):
             self.props['alt'].__repr__())
 
 
-class _Container(_Component):
+class _Composite(_Leaf):
     '''Abstract for components with multiple child. Do not use it directly.
 
     :param list components: Components to add.
     '''
 
     def __init__(self, *components, **kwargs):
-        super(_Container, self).__init__(**kwargs)
+        super(_Composite, self).__init__(**kwargs)
         self.components = []
         for c in components:
             self.add(c)
@@ -190,7 +195,7 @@ class _Container(_Component):
             ('\n' + (' ' * (self.depth + 1) * 4)).join(map(str, self.components)))
 
 
-class _Header(_Container):
+class _Header(_Composite):
     '''Header, Do not use it directly. It's supposed to be an abstract class'''
     pass
 
@@ -225,52 +230,52 @@ class Header6(_Header):
     pass
 
 
-class Footer(_Container):
+class Footer(_Composite):
     '''Footer. Similar to <footer></footer>'''
     pass
 
 
-class Small(_Container):
+class Small(_Composite):
     '''Small. Similar to <small></small>'''
     pass
 
 
-class Cite(_Container):
+class Cite(_Composite):
     '''Cite. Similar to <cite></cite>'''
     pass
 
 
-class Italic(_Container):
+class Italic(_Composite):
     '''Italic. Similar to <i></i>'''
     pass
 
 
-class Bold(_Container):
+class Bold(_Composite):
     '''Bold. Similar to <b></b>'''
     pass
 
 
-class Blockquote(_Container):
+class Blockquote(_Composite):
     '''Blockquote. Similar to <blockquote></blockquote>'''
     pass
 
 
-class Pre(_Container):
+class Pre(_Composite):
     '''Pre. Similar to <pre></pre>'''
     pass
 
 
-class Code(_Container):
+class Code(_Composite):
     '''Code. Similar to <code></code>'''
     pass
 
 
-class Del(_Container):
+class Del(_Composite):
     '''Del. Similar to <del></del>'''
     pass
 
 
-class Section(_Container):
+class Section(_Composite):
     '''Section. Similar to <section></section>.
 
     Example usage: ::
@@ -280,7 +285,7 @@ class Section(_Container):
     pass
 
 
-class Paragraph(_Container):
+class Paragraph(_Composite):
     '''Paragraph. Similar to <p></p>.
 
     Example usage: ::
@@ -290,7 +295,7 @@ class Paragraph(_Container):
     pass
 
 
-class Span(_Container):
+class Span(_Composite):
     '''Span. Similar to <span></span>.
 
     Example usage: ::
@@ -300,7 +305,7 @@ class Span(_Container):
     pass
 
 
-class _List(_Container):
+class _List(_Composite):
     '''Abstract class for ordered and unordered list.
     Do not use it directly.
     '''
@@ -327,14 +332,14 @@ class UnorderedList(_List):
     pass
 
 
-class ListItem(_Container):
+class ListItem(_Composite):
     '''ListItem. Similar to <li></li>.
     It should be used inside OrderedList and UnorderedList only.
     '''
     pass
 
 
-class Table(_Container):
+class Table(_Composite):
     '''Table. Similar to <table></table>.
 
     Example usage: ::
@@ -346,17 +351,17 @@ class Table(_Container):
     pass
 
 
-class TableHeader(_Container):
+class TableHeader(_Composite):
     '''TableHeader. Similar to <thead></thead>'''
     pass
 
 
-class TableRow(_Container):
+class TableRow(_Composite):
     '''TableRow. Similar to <tr></tr>'''
     pass
 
 
-class TableData(_Container):
+class TableData(_Composite):
     '''TableData. Similar to <td></td>'''
     pass
 
