@@ -51,7 +51,6 @@ class HTML(Formatter):
 
         @self.handle(Document)
         def handle_doc(self, obj):
-            self._spacing
             return self.tmpl.format(('\n' + (' ' * self._spacing)).join(
                 [self.f(c) for c in obj.components]))
 
