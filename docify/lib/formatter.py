@@ -2,6 +2,8 @@ from copy import deepcopy
 
 from docify import components as c
 
+__all__ = ['Formatter']
+
 
 class Formatter(object):
     '''Abstract class for formatter. Do not use it directly.
@@ -28,11 +30,15 @@ class Formatter(object):
                 '.')))))
 
     def handle(self, *items):
-        '''Handle decorator. Register a handler for given items.
+        '''Initializes decorator to register a handler for given items.
 
         :param list items: List of items to handle.
         '''
-        return lambda func: [self.handlers.update({i: func}) for i in items]
+        def decorator(func):
+            for i in items:
+                self.handlers.update({i: func})
+            return func
+        return decorator
 
     def update_handlers(self):
         '''Update handlers. Called by render() before

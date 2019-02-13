@@ -2,6 +2,8 @@ from copy import deepcopy
 
 from docify.lib import components as c
 
+__all__ = ['Document']
+
 
 class Document(object):
     '''The core document object.
@@ -12,7 +14,8 @@ class Document(object):
     
     Example usage: ::
 
-        doc = Document(P('Hail Docify!'))
+        doc = Document('Hail Docify!')
+
         print(HTML(doc))
         print(Markdown(doc))
         print(Whatever(doc))

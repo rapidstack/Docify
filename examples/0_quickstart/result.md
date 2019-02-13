@@ -1,76 +1,95 @@
-Header 1
-===============
-
-Header 2
----------------
-
-### Header 3
-
-#### Header 4
-
-##### Header 5
-
-###### Header 6
-
-*Italic*
-
-**Bold**
-
-***Italic* inside bold**
-
-***Bold** inside italic*
-
-> Blockquote
-
-~~Strikethrough~~
-
-```
-# Code block
-:(){ :|:& };:
-```
-
-Inline code: ``:(){ :|:& };:``
-
-Span -> Nested span
-
-1. Item 1
-
-2. [Item 2](#)
-
-   * Item 2.1
-
-   * [Item 2.2](#)
-
-      1. Item 2.2.1
-
-      2. [Item 2.2.2](#)
-
-
-
-
-
-
-
-**Field** | **Value**
----------- | ----------
-x | 100
-y | 200
-
-
-![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)
-
---------------------
-
-[google](https://google.com)
-
-
-
-[![Image Test](https://img.shields.io/badge/docify-image_test-green.svg)](https://img.shields.io/badge/docify-image_test-green.svg)
-
---------------------
-
-*This document was generated with [Docify](https://github.com/rapidstack/Docify).*
-
-
-
-
+Document(
+    Header1(
+        Text('Header 1'))
+    Header2(
+        Text('Header 2'))
+    Header3(
+        Text('Header 3'))
+    Header4(
+        Text('Header 4'))
+    Header5(
+        Text('Header 5'))
+    Header6(
+        Text('Header 6'))
+    Paragraph(
+        Italic(
+            Text('Italic')))
+    Paragraph(
+        Bold(
+            Text('Bold')))
+    Paragraph(
+        Bold(
+            Span(
+                Italic(
+                    Text('Italic'))
+                NoBreakSpace()
+                Text('inside bold'))))
+    Paragraph(
+        Italic(
+            Bold(
+                Text('Bold'))
+            Text(' inside italic')))
+    Blockquote(
+        Text('Blockquote'))
+    Paragraph(
+        Del(
+            Text('Strikethrough')))
+    Pre(
+        Code(
+            Text('# Code block\n:(){ :|:& };:')))
+    Paragraph(
+        Span(
+            Text('Inline code: ')
+            Code(
+                Text(':(){ :|:& };:'))))
+    Paragraph(
+        Span(
+            Text('Span')
+            Text(' -> ')
+            Span(
+                Text('Nested span'))))
+    OrderedList(
+        ListItem(
+            Text('Item 1'))
+        ListItem(
+            Anchor('Item 2', href='#'))
+        UnorderedList(
+            ListItem(
+                Text('Item 2.1'))
+            ListItem(
+                Anchor('Item 2.2', href='#'))
+            OrderedList(
+                ListItem(
+                    Text('Item 2.2.1'))
+                ListItem(
+                    Anchor('Item 2.2.2', href='#')))))
+    Table(
+        TableRow(
+            TableHeader(
+                Text('Field'))
+            TableHeader(
+                Text('Value')))
+        TableRow(
+            TableData(
+                Text('x'))
+            TableData(
+                Text('100')))
+        TableRow(
+            TableData(
+                Text('y'))
+            TableData(
+                Text('200'))))
+    Paragraph(
+        Image(src='https://img.shields.io/badge/docify-image_test-green.svg', alt='Image Test'))
+    HorizontalRule()
+    Anchor('google', href='https://google.com')
+    Break()
+    Anchor(Image(src='https://img.shields.io/badge/docify-image_test-green.svg', alt='Image Test'), href='https://img.shields.io/badge/docify-image_test-green.svg')
+    HorizontalRule()
+    Footer(
+        Paragraph(
+            Small(
+                Cite(
+                    Text('This document was generated with ')
+                    Anchor('Docify', href='https://github.com/rapidstack/Docify')
+                    Text('.'))))))

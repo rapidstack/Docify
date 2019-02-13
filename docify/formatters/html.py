@@ -32,11 +32,9 @@ class HTML(Formatter):
 
     def tag(self, tag, components=[], properties={}):
         attrs = ''
-        if len(properties) > 0:
-            attrs += ' '
-            for k in properties:
-                v = properties[k]
-                attrs += '{}="{}"'.format(k, v.replace('"', '\\"'))
+        for k in properties:
+            v = properties[k]
+            attrs += ' {}="{}"'.format(k, v.replace('"', '\\"'))
 
         if len(components) == 0:
             return '<{0}{1} />'.format(tag, attrs)

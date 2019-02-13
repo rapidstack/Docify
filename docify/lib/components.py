@@ -1,5 +1,66 @@
 from copy import deepcopy
 
+__all__ = [
+    '_Component',
+    '_Leaf',
+    'Text',
+    '_Symbol',
+    'NoBreakSpace',
+    'Break',
+    'HorizontalRule',
+    'Anchor',
+    'Image',
+    '_Composite',
+    '_Header',
+    'Header1',
+    'Header2',
+    'Header3',
+    'Header4',
+    'Header5',
+    'Header6',
+    'Footer',
+    'Small',
+    'Cite',
+    'Italic',
+    'Bold',
+    'Blockquote',
+    'Pre',
+    'Code',
+    'Del',
+    'Section',
+    'Paragraph',
+    'Span',
+    '_List',
+    'OrderedList',
+    'ListItem',
+    'Table',
+    'TableHeader',
+    'TableRow',
+    'TableData',
+    'Ol',
+    'Ul',
+    'Hr',
+    'Br',
+    'Img',
+    'A',
+    'Nbsp',
+    'Li',
+    'H1',
+    'H2',
+    'H3',
+    'H4',
+    'H5',
+    'H6',
+    'P',
+    'B',
+    'Strong',
+    'I',
+    'Em',
+    'Th',
+    'Tr',
+    'Td'
+]
+
 
 class _Component(object):
     '''An abstract class for any component. Do not use this class directly.
@@ -280,7 +341,9 @@ class Section(_Composite):
 
     Example usage: ::
 
-        Section(I('Some text'), B('Some other text'))
+        Section(
+            I('Some text'),
+            B('Some other text'))
     '''
     pass
 
@@ -290,7 +353,10 @@ class Paragraph(_Composite):
 
     Example usage: ::
 
-        P(I('Some text'), Nbsp(), B('Some other text'))
+        P(
+            I('Some text'),
+            Nbsp(),
+            B('Some other text'))
     '''
     pass
 
@@ -317,7 +383,11 @@ class OrderedList(_List):
 
     Example usage: ::
 
-        Ol(Li('item 1'), Li('item 2'), Ol(Li('item 2.1')))
+        Ol(
+            Li('item 1'),
+            Li('item 2'),
+            Ll(
+                Li('item 2.1')))
     '''
     pass
 
@@ -327,7 +397,11 @@ class UnorderedList(_List):
 
     Example usage: ::
 
-        Ul(Li('item 1'), Li('item 2'), Ul(Li('item 2.1')))
+        Ul(
+            Li('item 1'),
+            Li('item 2'),
+            Ul(
+                Li('item 2.1')))
     '''
     pass
 
@@ -345,8 +419,12 @@ class Table(_Composite):
     Example usage: ::
 
         Table(
-            Tr(Th('header 1'), Th('header 2')),
-            Tr(Td('value 1'), Td('value 2')))
+            Tr(
+                Th('header 1'),
+                Th('header 2')),
+            Tr(
+                Td('value 1'),
+                Td('value 2')))
     '''
     pass
 
