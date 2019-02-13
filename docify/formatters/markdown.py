@@ -3,6 +3,8 @@ import re
 from docify.lib.formatter import Formatter
 from docify import Document, components as c
 
+__all__ = ['Markdown']
+
 
 class Markdown(Formatter):
     '''Markdown formatter to format document into plain markdown.'''
@@ -37,103 +39,103 @@ class Markdown(Formatter):
 
         super(Markdown, self).update_handlers()
 
-        @self.handle(Document)
+        @self.handles(Document)
         def handle_doc(self, obj):
             return ''.join(map(lambda c: self.r(self.f(c), c), obj.components))
 
-        @self.handle(c.Text)
+        @self.handles(c.Text)
         def handle_text(self, obj):
             return self.r(
                 re.sub(r'((([_*]).+?\3[^_*]*)*)([_*])', r'\g<1>\\\\\g<4>', obj.value), obj)
 
-        @self.handle(c.Nbsp)
+        @self.handles(c.Nbsp)
         def handle_nbsp(self, obj):
             return self.r(' ', obj)
 
-        @self.handle(c.Break)
+        @self.handles(c.Break)
         def handle_br(self, obj):
             return self.r('', obj)
 
-        @self.handle(c.HorizontalRule)
+        @self.handles(c.HorizontalRule)
         def handle_hr(self, obj):
             return self.r('--------------------', obj)
 
-        @self.handle(c.Anchor)
+        @self.handles(c.Anchor)
         def handle_a(self, obj):
             return self.r('[{}]({})'.format(self.f(obj.value), obj.props['href']), obj)
 
-        @self.handle(c.Image)
+        @self.handles(c.Image)
         def handle_img(self, obj):
             return self.r('![{}]({})'.format(obj.props['alt'], obj.props['src']), obj)
 
-        @self.handle(
+        @self.handles(
             c.Footer, c.Small, c.Section, c.Paragraph, c.Span,
             c.ListItem, c.TableData, c.Table)
         def handle_default(self, obj):
             return self.r(''.join(map(
                 lambda c: self.r(self.f(c), c), obj.components)), obj)
 
-        @self.handle(c.Header1)
+        @self.handles(c.Header1)
         def handle_h1(self, obj):
             return self.r('{}\n==============='.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Header2)
+        @self.handles(c.Header2)
         def handle_h2(self, obj):
             return self.r('{}\n---------------'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Header3)
+        @self.handles(c.Header3)
         def handle_h3(self, obj):
             return self.r('### {}'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Header4)
+        @self.handles(c.Header4)
         def handle_h4(self, obj):
             return self.r('#### {}'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Header5)
+        @self.handles(c.Header5)
         def handle_h5(self, obj):
             return self.r('##### {}'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Header6)
+        @self.handles(c.Header6)
         def handle_h6(self, obj):
             return self.r('###### {}'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Cite, c.Italic)
+        @self.handles(c.Cite, c.Italic)
         def handle_cite_i(self, obj):
             return self.r('*{}*'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Bold, c.TableHeader)
+        @self.handles(c.Bold, c.TableHeader)
         def handle_b(self, obj):
             return self.r('**{}**'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Blockquote)
+        @self.handles(c.Blockquote)
         def handle_blockquote(self, obj):
             return self.r('> {}'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Pre)
+        @self.handles(c.Pre)
         def handle_pre(self, obj):
             return self.r('```\n{}\n```'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.Code)
+        @self.handles(c.Code)
         def handle_code(self, obj):
             if type(obj.parent) != c.Pre:
                 return self.r('``{}``'.format(
@@ -142,13 +144,13 @@ class Markdown(Formatter):
             return self.r(''.join(map(
                 lambda c: self.r(self.f(c), c), obj.components)), obj)
 
-        @self.handle(c.Del)
+        @self.handles(c.Del)
         def handle_del(self, obj):
             return self.r('~~{}~~'.format(
                 ''.join(map(lambda c: self.r(self.f(c), c), obj.components)),
             ), obj)
 
-        @self.handle(c.OrderedList)
+        @self.handles(c.OrderedList)
         def handle_ol(self, obj):
             txt = ''
             n, d = 0, 0
@@ -166,7 +168,7 @@ class Markdown(Formatter):
                     ' ' * d * 3, n, self.f(x)), x)
             return self.r(txt, obj)
 
-        @self.handle(c.UnorderedList)
+        @self.handles(c.UnorderedList)
         def handle_ul(self, obj):
             txt = ''
             d = 0
@@ -182,7 +184,7 @@ class Markdown(Formatter):
                     ' ' * d * 3, self.f(x)), x)
             return self.r(txt, obj)
 
-        @self.handle(c.TableRow)
+        @self.handles(c.TableRow)
         def handle_tr(self, obj):
             txt = ' | '.join(map(self.f, obj.components))
             txt += '\n'

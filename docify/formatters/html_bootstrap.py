@@ -3,6 +3,11 @@ import cgi
 from docify import components as c
 from docify.formatters.html import HTML
 
+__all__ = [
+    'DOC_TMPL',
+    'HTMLBootstrap'
+]
+
 
 DOC_TMPL = '''
 <!doctype html>
@@ -39,12 +44,12 @@ class HTMLBootstrap(HTML):
 
         super(HTMLBootstrap, self).update_handlers()
 
-        @self.handle(c.Pre)
+        @self.handles(c.Pre)
         def handle_pre(self, obj):
             return self.tag('pre', obj.components, {
                 'class': 'bg-light rounded'})
 
-        @self.handle(c.Code)
+        @self.handles(c.Code)
         def handle_code(self, obj):
             return self.tag('code', obj.components, {
                 'class': 'bg-light rounded'})

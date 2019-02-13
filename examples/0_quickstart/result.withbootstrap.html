@@ -1,95 +1,45 @@
-Document(
-    Header1(
-        Text('Header 1'))
-    Header2(
-        Text('Header 2'))
-    Header3(
-        Text('Header 3'))
-    Header4(
-        Text('Header 4'))
-    Header5(
-        Text('Header 5'))
-    Header6(
-        Text('Header 6'))
-    Paragraph(
-        Italic(
-            Text('Italic')))
-    Paragraph(
-        Bold(
-            Text('Bold')))
-    Paragraph(
-        Bold(
-            Span(
-                Italic(
-                    Text('Italic'))
-                NoBreakSpace()
-                Text('inside bold'))))
-    Paragraph(
-        Italic(
-            Bold(
-                Text('Bold'))
-            Text(' inside italic')))
-    Blockquote(
-        Text('Blockquote'))
-    Paragraph(
-        Del(
-            Text('Strikethrough')))
-    Pre(
-        Code(
-            Text('# Code block\n:(){ :|:& };:')))
-    Paragraph(
-        Span(
-            Text('Inline code: ')
-            Code(
-                Text(':(){ :|:& };:'))))
-    Paragraph(
-        Span(
-            Text('Span')
-            Text(' -> ')
-            Span(
-                Text('Nested span'))))
-    OrderedList(
-        ListItem(
-            Text('Item 1'))
-        ListItem(
-            Anchor('Item 2', href='#'))
-        UnorderedList(
-            ListItem(
-                Text('Item 2.1'))
-            ListItem(
-                Anchor('Item 2.2', href='#'))
-            OrderedList(
-                ListItem(
-                    Text('Item 2.2.1'))
-                ListItem(
-                    Anchor('Item 2.2.2', href='#')))))
-    Table(
-        TableRow(
-            TableHeader(
-                Text('Field'))
-            TableHeader(
-                Text('Value')))
-        TableRow(
-            TableData(
-                Text('x'))
-            TableData(
-                Text('100')))
-        TableRow(
-            TableData(
-                Text('y'))
-            TableData(
-                Text('200'))))
-    Paragraph(
-        Image(src='https://img.shields.io/badge/docify-image_test-green.svg', alt='Image Test'))
-    HorizontalRule()
-    Anchor('google', href='https://google.com')
-    Break()
-    Anchor(Image(src='https://img.shields.io/badge/docify-image_test-green.svg', alt='Image Test'), href='https://img.shields.io/badge/docify-image_test-green.svg')
-    HorizontalRule()
-    Footer(
-        Paragraph(
-            Small(
-                Cite(
-                    Text('This document was generated with ')
-                    Anchor('Docify', href='https://github.com/rapidstack/Docify')
-                    Text('.'))))))
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <title>Docify Document</title>
+    </head>
+    <body>
+        <div class="sidebar col-lg-3 col-md-2"></div>
+        <div id="container" class="container col-lg-6 col-md-8">
+            <h1>Header 1</h1>
+            <h2>Header 2</h2>
+            <h3>Header 3</h3>
+            <h4>Header 4</h4>
+            <h5>Header 5</h5>
+            <h6>Header 6</h6>
+            <p><i>Italic</i></p>
+            <p><b>Bold</b></p>
+            <p><b><span><i>Italic</i>&nbsp;inside bold</span></b></p>
+            <p><i><b>Bold</b> inside italic</i></p>
+            <blockquote>Blockquote</blockquote>
+            <p><del>Strikethrough</del></p>
+            <pre class="bg-light rounded"><code class="bg-light rounded"># Code block
+:(){ :|:&amp; };:</code></pre>
+            <p><span>Inline code: <code class="bg-light rounded">:(){ :|:&amp; };:</code></span></p>
+            <p><span>Span -&gt; <span>Nested span</span></span></p>
+            <ol><li>Item 1</li><li><a href="#">Item 2</a></li><ul><li>Item 2.1</li><li><a href="#">Item 2.2</a></li><ol><li>Item 2.2.1</li><li><a href="#">Item 2.2.2</a></li></ol></ul></ol>
+            <table><tr><th>Field</th><th>Value</th></tr><tr><td>x</td><td>100</td></tr><tr><td>y</td><td>200</td></tr></table>
+            <p><img src="https://img.shields.io/badge/docify-image_test-green.svg" alt="Image Test" /></p>
+            <hr />
+            <a href="https://google.com">google</a>
+            <br />
+            <a href="https://img.shields.io/badge/docify-image_test-green.svg"><img src="https://img.shields.io/badge/docify-image_test-green.svg" alt="Image Test" /></a>
+            <hr />
+            <footer><p><small><cite>This document was generated with <a href="https://github.com/rapidstack/Docify">Docify</a>.</cite></small></p></footer>
+        </div>
+        <div class="sidebar col-lg-3 col-md-2"></div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
+

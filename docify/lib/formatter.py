@@ -14,9 +14,13 @@ class Formatter(object):
     Example usage: ::
 
         class MyFormatter(Formatter):
-            @self.handle(Span, Paragraph)
-            def handle_span_and_paragraph(self, obj):
-                return str(obj)
+
+            def update_handlers(self):
+                super(MyFormatter, self).update_handlers()
+
+                @self.handles(Span, Paragraph)
+                def handle_span_and_paragraph(self, obj):
+                    return str(obj)
     '''
 
     def __init__(self, document, cite=True):
@@ -29,7 +33,7 @@ class Formatter(object):
                 c.A('Docify', 'https://github.com/rapidstack/Docify'),
                 '.')))))
 
-    def handle(self, *items):
+    def handles(self, *items):
         '''Initializes decorator to register a handler for given items.
 
         :param list items: List of items to handle.
