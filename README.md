@@ -32,9 +32,6 @@ pip install docify
 Usage & Examples
 ---------------
 
-**[Read API documentation on Read the Docs](https://docify.readthedocs.io)**
-
-
 
 **[Find quickstart and more examples here](https://github.com/rapidstack/docify/tree/master/examples)**
 
