@@ -3,8 +3,6 @@ Docify
 
 Simple, flexible python document generator
 
-[![PyPI version](https://img.shields.io/pypi/v/Docify.svg)](https://pypi.org/project/Docify) [![Build Status](https://travis-ci.org/rapidstack/Docify.svg?branch=master)](https://travis-ci.org/rapidstack/Docify) [![Documentation Status](https://readthedocs.org/projects/docify/badge/?version=latest)](https://docify.readthedocs.io/en/latest/?badge=latest)
-
 
 
  
